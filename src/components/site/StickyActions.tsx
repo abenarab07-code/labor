@@ -30,6 +30,7 @@ export function StickyMobileBar({
         </a>
         <Link
           to="/rendez-vous"
+          preload="intent"
           onClick={() =>
             track("appointment_form_started", { from: "sticky_mobile" })
           }

@@ -4,9 +4,16 @@ import {
   useScroll,
   useTransform,
   useSpring,
+  useMotionValue,
   type MotionValue,
 } from "motion/react";
-import { useRef, useEffect, useState, type ReactNode, type MouseEvent } from "react";
+import {
+  useRef,
+  useEffect,
+  useState,
+  type ReactNode,
+  type MouseEvent,
+} from "react";
 import { durations, easings, staggers } from "./motion-tokens";
 import { useReducedMotionMode, useLowPowerMode } from "./hooks";
 
@@ -33,7 +40,11 @@ export function MaskedTextReveal({
         className="inline-block will-change-transform"
         initial={{ y: reduced ? 0 : "105%" }}
         animate={inView ? { y: "0%" } : undefined}
-        transition={{ duration: reduced ? 0.25 : 0.9, ease: easings.easeOut, delay }}
+        transition={{
+          duration: reduced ? 0.25 : 0.9,
+          ease: easings.easeOut,
+          delay,
+        }}
       >
         {children}
       </motion.span>
@@ -67,12 +78,20 @@ export function ImageCurtainReveal({
       className={`overflow-hidden ${className}`}
       initial={{ clipPath: reduced ? "inset(0 0 0 0)" : closed }}
       animate={inView ? { clipPath: "inset(0 0 0 0)" } : undefined}
-      transition={{ duration: reduced ? 0.3 : 1.1, ease: easings.easeInOut, delay }}
+      transition={{
+        duration: reduced ? 0.3 : 1.1,
+        ease: easings.easeInOut,
+        delay,
+      }}
     >
       <motion.div
         initial={{ scale: reduced ? 1 : 1.08 }}
         animate={inView ? { scale: 1 } : undefined}
-        transition={{ duration: reduced ? 0.3 : 1.3, ease: easings.easeOut, delay }}
+        transition={{
+          duration: reduced ? 0.3 : 1.3,
+          ease: easings.easeOut,
+          delay,
+        }}
         className="h-full w-full"
       >
         {children}
@@ -96,32 +115,44 @@ export function MagneticButton({
   as?: "button" | "a";
 } & Record<string, unknown>) {
   const ref = useRef<HTMLElement>(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const pointerRect = useRef<DOMRect | null>(null);
+  const targetX = useMotionValue(0);
+  const targetY = useMotionValue(0);
+  const x = useSpring(targetX, { stiffness: 180, damping: 16, mass: 0.4 });
+  const y = useSpring(targetY, { stiffness: 180, damping: 16, mass: 0.4 });
   const reduced = useReducedMotionMode();
   const low = useLowPowerMode();
 
+  function handleEnter(e: MouseEvent) {
+    if (reduced || low) return;
+    pointerRect.current = e.currentTarget.getBoundingClientRect();
+  }
+
   function handleMove(e: MouseEvent) {
     if (reduced || low) return;
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
+    const r = pointerRect.current ?? e.currentTarget.getBoundingClientRect();
+    pointerRect.current = r;
     const dx = e.clientX - (r.left + r.width / 2);
     const dy = e.clientY - (r.top + r.height / 2);
     const max = strength;
-    setPos({
-      x: Math.max(-max, Math.min(max, dx * 0.25)),
-      y: Math.max(-max, Math.min(max, dy * 0.25)),
-    });
+    targetX.set(Math.max(-max, Math.min(max, dx * 0.25)));
+    targetY.set(Math.max(-max, Math.min(max, dy * 0.25)));
+  }
+
+  function handleLeave() {
+    pointerRect.current = null;
+    targetX.set(0);
+    targetY.set(0);
   }
   const Comp = as === "a" ? motion.a : motion.button;
   return (
     <Comp
       ref={ref as never}
+      onMouseEnter={handleEnter as never}
       onMouseMove={handleMove as never}
-      onMouseLeave={() => setPos({ x: 0, y: 0 })}
+      onMouseLeave={handleLeave}
       onClick={onClick}
-      animate={{ x: pos.x, y: pos.y }}
-      transition={{ type: "spring", stiffness: 180, damping: 16, mass: 0.4 }}
+      style={{ x, y }}
       className={className}
       {...rest}
     >
@@ -220,7 +251,10 @@ export function useParallax(
   range = 60,
 ): [React.RefObject<HTMLElement | null>, MotionValue<number>] {
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
   const y = useTransform(
     useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.4 }),
     [0, 1],
@@ -229,8 +263,15 @@ export function useParallax(
   return [ref, y];
 }
 
-export function ScrollProgressLine({ target }: { target: React.RefObject<HTMLElement | null> }) {
-  const { scrollYProgress } = useScroll({ target, offset: ["start end", "end start"] });
+export function ScrollProgressLine({
+  target,
+}: {
+  target: React.RefObject<HTMLElement | null>;
+}) {
+  const { scrollYProgress } = useScroll({
+    target,
+    offset: ["start end", "end start"],
+  });
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 25 });
   return (
     <motion.div

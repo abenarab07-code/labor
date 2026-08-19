@@ -136,15 +136,61 @@ function Reveal({
   className?: string;
   delay?: number;
 }) {
+  const reducedMotion = useReducedMotion();
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 42 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-12% 0px -8% 0px" }}
-      transition={{ duration: 0.9, delay, ease: easeOut }}
+      initial={reducedMotion ? false : { opacity: 0, y: 42 }}
+      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={
+        reducedMotion ? undefined : { once: true, margin: "-12% 0px -8% 0px" }
+      }
+      transition={
+        reducedMotion ? undefined : { duration: 0.9, delay, ease: easeOut }
+      }
     >
       {children}
+    </motion.div>
+  );
+}
+
+function FaqItem({
+  item,
+  index,
+  reducedMotion,
+}: {
+  item: (typeof frequentlyAsked)[number];
+  index: number;
+  reducedMotion: boolean;
+}) {
+  const [open, setOpen] = useState(index === 0);
+  return (
+    <motion.div
+      initial={reducedMotion ? false : { opacity: 0, x: 28 }}
+      whileInView={reducedMotion ? undefined : { opacity: 1, x: 0 }}
+      viewport={reducedMotion ? undefined : { once: true, margin: "-5%" }}
+      transition={
+        reducedMotion
+          ? undefined
+          : { duration: 0.65, delay: index * 0.06, ease: easeOut }
+      }
+    >
+      <details
+        className="group border-t border-midnight/12 py-5"
+        open={open}
+        onToggle={(event) => setOpen(event.currentTarget.open)}
+      >
+        <summary className="flex cursor-pointer list-none items-start justify-between gap-5 font-display text-2xl text-midnight marker:content-none">
+          {item.q}
+          <span
+            aria-hidden="true"
+            className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-midnight/12 font-sans text-sm text-blue transition-transform group-open:rotate-45"
+          >
+            +
+          </span>
+        </summary>
+        <p className="max-w-xl pt-4 text-sm leading-6 text-slate">{item.a}</p>
+      </details>
     </motion.div>
   );
 }
@@ -589,7 +635,7 @@ export function LaboratoryHome() {
       <section
         id="hematologie"
         ref={hematologyRef}
-        className="relative overflow-hidden bg-midnight py-24 text-plasma md:py-36"
+        className="relative scroll-mt-24 overflow-hidden bg-midnight py-24 text-plasma md:py-36"
       >
         <picture className="absolute inset-0 block">
           <source srcSet={bloodSmearAvif} type="image/avif" />
@@ -611,13 +657,17 @@ export function LaboratoryHome() {
           className="absolute right-[7%] top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full border border-blue/20"
           animate={
             reducedMotion || !hematologyActive
-              ? undefined
+              ? { rotate: 0, scale: 1 }
               : { rotate: 360, scale: [0.96, 1.04, 0.96] }
           }
-          transition={{
-            rotate: { duration: 42, repeat: Infinity, ease: "linear" },
-            scale: { duration: 7, repeat: Infinity },
-          }}
+          transition={
+            reducedMotion || !hematologyActive
+              ? { duration: 0 }
+              : {
+                  rotate: { duration: 42, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 7, repeat: Infinity },
+                }
+          }
         >
           <span className="absolute left-1/2 top-0 h-2 w-2 rounded-full bg-coral shadow-[0_0_24px_6px_rgba(239,93,88,0.35)]" />
           <span className="absolute inset-[18%] rounded-full border border-dashed border-white/10" />
@@ -660,6 +710,7 @@ export function LaboratoryHome() {
             <Link
               to="/rendez-vous"
               search={{ soin: "consultation-hematologie" }}
+              preload="intent"
               className="mt-8 inline-flex items-center gap-3 border-b border-blue pb-2 text-sm font-semibold text-white hover:text-blue"
             >
               Demander une consultation <ArrowUpRight className="h-4 w-4" />
@@ -690,26 +741,36 @@ export function LaboratoryHome() {
                 <motion.div
                   key={step.number}
                   className="group relative grid gap-5 overflow-hidden border-t border-midnight/12 py-7 sm:grid-cols-[70px_1fr] md:grid-cols-[90px_1fr_1fr]"
-                  initial={{ opacity: 0, x: 48 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-8%" }}
-                  transition={{
-                    duration: 0.72,
-                    delay: index * 0.07,
-                    ease: easeOut,
-                  }}
+                  initial={reducedMotion ? false : { opacity: 0, x: 48 }}
+                  whileInView={reducedMotion ? undefined : { opacity: 1, x: 0 }}
+                  viewport={
+                    reducedMotion ? undefined : { once: true, margin: "-8%" }
+                  }
+                  transition={
+                    reducedMotion
+                      ? undefined
+                      : {
+                          duration: 0.72,
+                          delay: index * 0.07,
+                          ease: easeOut,
+                        }
+                  }
                 >
                   <motion.span
                     aria-hidden="true"
-                    className="absolute left-0 top-0 h-px bg-blue"
-                    initial={{ width: "0%" }}
-                    whileInView={{ width: "100%" }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.9,
-                      delay: 0.16 + index * 0.06,
-                      ease: easeOut,
-                    }}
+                    className="absolute left-0 top-0 h-px w-full origin-left bg-blue"
+                    initial={reducedMotion ? false : { scaleX: 0 }}
+                    whileInView={reducedMotion ? undefined : { scaleX: 1 }}
+                    viewport={reducedMotion ? undefined : { once: true }}
+                    transition={
+                      reducedMotion
+                        ? undefined
+                        : {
+                            duration: 0.9,
+                            delay: 0.16 + index * 0.06,
+                            ease: easeOut,
+                          }
+                    }
                   />
                   <span className="text-[0.68rem] font-bold tracking-[0.16em] text-coral">
                     {step.number}
@@ -740,10 +801,18 @@ export function LaboratoryHome() {
         <div className="container-editorial grid gap-14 lg:grid-cols-12 lg:items-center">
           <motion.div
             className="relative lg:col-span-5"
-            initial={{ opacity: 0, x: -45, rotate: -1.5 }}
-            whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.95, ease: easeOut }}
+            initial={
+              reducedMotion ? false : { opacity: 0, x: -45, rotate: -1.5 }
+            }
+            whileInView={
+              reducedMotion ? undefined : { opacity: 1, x: 0, rotate: 0 }
+            }
+            viewport={
+              reducedMotion ? undefined : { once: true, margin: "-10%" }
+            }
+            transition={
+              reducedMotion ? undefined : { duration: 0.95, ease: easeOut }
+            }
           >
             <motion.div
               className="relative mx-auto max-w-[420px] overflow-hidden rounded-[2rem] bg-midnight shadow-[0_40px_100px_-45px_rgba(7,26,43,0.55)]"
@@ -756,7 +825,7 @@ export function LaboratoryHome() {
                 controls
                 playsInline
                 preload="none"
-                poster={doctorPoster}
+                poster={doctorPosterAvif}
                 className="aspect-[9/16] w-full object-cover"
                 aria-label="Présentation vidéo du concept par Dr Tarfaya"
               >
@@ -769,10 +838,14 @@ export function LaboratoryHome() {
                 <motion.span
                   animate={
                     reducedMotion || !doctorActive
-                      ? undefined
+                      ? { scale: 1 }
                       : { scale: [1, 1.35, 1] }
                   }
-                  transition={{ duration: 2, repeat: Infinity }}
+                  transition={
+                    reducedMotion || !doctorActive
+                      ? { duration: 0 }
+                      : { duration: 2, repeat: Infinity }
+                  }
                 >
                   <Play className="h-3 w-3 fill-current text-coral" />
                 </motion.span>
@@ -783,9 +856,13 @@ export function LaboratoryHome() {
               aria-hidden="true"
               className="absolute -bottom-12 -left-10 h-36 w-36 rounded-full border border-blue/30 md:h-52 md:w-52"
               animate={
-                reducedMotion || !doctorActive ? undefined : { rotate: 360 }
+                reducedMotion || !doctorActive ? { rotate: 0 } : { rotate: 360 }
               }
-              transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
+              transition={
+                reducedMotion || !doctorActive
+                  ? { duration: 0 }
+                  : { duration: 26, repeat: Infinity, ease: "linear" }
+              }
             />
           </motion.div>
 
@@ -837,29 +914,12 @@ export function LaboratoryHome() {
           </Reveal>
           <div className="lg:col-span-6 lg:col-start-7">
             {frequentlyAsked.map((item, index) => (
-              <motion.details
+              <FaqItem
                 key={item.q}
-                className="group border-t border-midnight/12 py-5"
-                open={index === 0}
-                initial={{ opacity: 0, x: 28 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-5%" }}
-                transition={{
-                  duration: 0.65,
-                  delay: index * 0.06,
-                  ease: easeOut,
-                }}
-              >
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-5 font-display text-2xl text-midnight marker:content-none">
-                  {item.q}
-                  <span className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-full border border-midnight/12 font-sans text-sm text-blue transition-transform group-open:rotate-45">
-                    +
-                  </span>
-                </summary>
-                <p className="max-w-xl pt-4 text-sm leading-6 text-slate">
-                  {item.a}
-                </p>
-              </motion.details>
+                item={item}
+                index={index}
+                reducedMotion={reducedMotion}
+              />
             ))}
           </div>
         </div>
@@ -875,13 +935,17 @@ export function LaboratoryHome() {
           className="absolute -right-36 -top-40 h-[38rem] w-[38rem] rounded-full border border-white/15"
           animate={
             reducedMotion || !contactActive
-              ? undefined
+              ? { rotate: 0, scale: 1 }
               : { rotate: 360, scale: [1, 1.05, 1] }
           }
-          transition={{
-            rotate: { duration: 52, repeat: Infinity, ease: "linear" },
-            scale: { duration: 8, repeat: Infinity },
-          }}
+          transition={
+            reducedMotion || !contactActive
+              ? { duration: 0 }
+              : {
+                  rotate: { duration: 52, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 8, repeat: Infinity },
+                }
+          }
         >
           <span className="absolute inset-[14%] rounded-full border border-dashed border-white/10" />
           <span className="absolute left-[18%] top-[5%] h-3 w-3 rounded-full bg-coral shadow-[0_0_28px_7px_rgba(239,93,88,0.32)]" />
@@ -959,6 +1023,7 @@ export function LaboratoryHome() {
             </div>
             <Link
               to="/rendez-vous"
+              preload="intent"
               className="flex gap-4 bg-blue p-6 transition-colors hover:bg-blue-dark"
             >
               <FileText className="mt-0.5 h-5 w-5 shrink-0" />

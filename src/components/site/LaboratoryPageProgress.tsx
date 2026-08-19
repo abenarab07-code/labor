@@ -1,10 +1,11 @@
 import { motion, useScroll, useSpring } from "motion/react";
-import { useLowPowerMode } from "@/motion/hooks";
+import { useLowPowerMode, useReducedMotionMode } from "@/motion/hooks";
 
 export function LaboratoryPageProgress() {
   const lowPower = useLowPowerMode();
+  const reducedMotion = useReducedMotionMode();
 
-  return lowPower ? null : <AnimatedPageProgress />;
+  return lowPower || reducedMotion ? null : <AnimatedPageProgress />;
 }
 
 function AnimatedPageProgress() {

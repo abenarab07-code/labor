@@ -1,4 +1,14 @@
+import { useLocation } from "@tanstack/react-router";
 import { useEffect, useRef, useState, Suspense, type ReactNode } from "react";
+
+function decodeHash(hash: string) {
+  const value = hash.startsWith("#") ? hash.slice(1) : hash;
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
 
 /**
  * Mounts `children` only when the wrapper enters (or is about to enter) the
@@ -9,7 +19,6 @@ export function LazyInView({
   children,
   minHeight,
   rootMargin = "600px 0px",
-  idleAfterMs,
   id,
   className,
   mountOnHash,
@@ -18,7 +27,6 @@ export function LazyInView({
   children: ReactNode;
   minHeight?: number | string;
   rootMargin?: string;
-  idleAfterMs?: number;
   id?: string;
   className?: string;
   mountOnHash?: readonly string[];
@@ -26,56 +34,15 @@ export function LazyInView({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
+  const routeHash = useLocation({ select: (location) => location.hash });
 
   useEffect(() => {
     if (inView) return;
     const el = ref.current;
     if (!el) return;
-    const idleWindow = window as typeof window & {
-      requestIdleCallback?: (
-        callback: () => void,
-        options?: { timeout: number },
-      ) => number;
-      cancelIdleCallback?: (id: number) => void;
-    };
-    let delayTimer: number | undefined;
-    let idleCallback: number | undefined;
-
-    const scheduleIdleMount = () => {
-      if (
-        idleAfterMs == null ||
-        document.hidden ||
-        delayTimer != null ||
-        idleCallback != null
-      ) {
-        return;
-      }
-      delayTimer = window.setTimeout(() => {
-        delayTimer = undefined;
-        if (document.hidden) return;
-        if (idleWindow.requestIdleCallback) {
-          idleCallback = idleWindow.requestIdleCallback(() => setInView(true), {
-            timeout: 1000,
-          });
-        } else {
-          setInView(true);
-        }
-      }, idleAfterMs);
-    };
-
-    const onVisibility = () => {
-      if (!document.hidden) scheduleIdleMount();
-    };
-
-    scheduleIdleMount();
-    document.addEventListener("visibilitychange", onVisibility);
     if (typeof IntersectionObserver === "undefined") {
       setInView(true);
-      return () => {
-        document.removeEventListener("visibilitychange", onVisibility);
-        if (delayTimer != null) window.clearTimeout(delayTimer);
-        if (idleCallback != null) idleWindow.cancelIdleCallback?.(idleCallback);
-      };
+      return;
     }
     const io = new IntersectionObserver(
       (entries) => {
@@ -92,41 +59,60 @@ export function LazyInView({
     io.observe(el);
     return () => {
       io.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
-      if (delayTimer != null) window.clearTimeout(delayTimer);
-      if (idleCallback != null) idleWindow.cancelIdleCallback?.(idleCallback);
     };
-  }, [idleAfterMs, inView, rootMargin]);
+  }, [inView, rootMargin]);
 
   useEffect(() => {
     if (inView || !mountOnHash?.length) return;
     const revealHashTarget = () => {
-      const target = decodeURIComponent(window.location.hash.slice(1));
+      const target = decodeHash(window.location.hash || routeHash);
       if (mountOnHash.includes(target)) setInView(true);
     };
     revealHashTarget();
     window.addEventListener("hashchange", revealHashTarget);
     return () => window.removeEventListener("hashchange", revealHashTarget);
-  }, [inView, mountOnHash]);
+  }, [inView, mountOnHash, routeHash]);
 
   useEffect(() => {
     if (!inView || !mountOnHash?.length) return;
-    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    const targetId = decodeHash(window.location.hash || routeHash);
     if (!mountOnHash.includes(targetId)) return;
-    let frame = 0;
-    let attempts = 0;
+    const alignmentTimers: number[] = [];
     const scrollToTarget = () => {
       const target = document.getElementById(targetId);
       if (target) {
         target.scrollIntoView({ block: "start" });
-        return;
+        return true;
       }
-      if (attempts++ < 120)
-        frame = window.requestAnimationFrame(scrollToTarget);
+      return false;
     };
-    frame = window.requestAnimationFrame(scrollToTarget);
-    return () => window.cancelAnimationFrame(frame);
-  }, [inView, mountOnHash]);
+    const stabilizeTarget = () => {
+      scrollToTarget();
+      // Lazy siblings can settle after the target first appears (especially
+      // when navigating here from another route). Re-align briefly so their
+      // reserved-height handoff cannot leave the anchor below the header.
+      for (const delay of [100, 300, 700, 1_400]) {
+        alignmentTimers.push(window.setTimeout(scrollToTarget, delay));
+      }
+    };
+    if (document.getElementById(targetId)) {
+      stabilizeTarget();
+      return () => alignmentTimers.forEach(window.clearTimeout);
+    }
+    const observer = new MutationObserver(() => {
+      if (document.getElementById(targetId)) {
+        stabilizeTarget();
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    const timeout = window.setTimeout(() => observer.disconnect(), 10_000);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timeout);
+      alignmentTimers.forEach(window.clearTimeout);
+    };
+  }, [inView, mountOnHash, routeHash]);
 
   return (
     <div

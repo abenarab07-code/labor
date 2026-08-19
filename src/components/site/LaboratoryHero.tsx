@@ -56,6 +56,7 @@ export function LaboratoryHero() {
   const px = useMotionValue(0);
   const py = useMotionValue(0);
   const pointerRect = useRef<DOMRect | null>(null);
+  const finePointer = useRef(false);
   const rotateX = useSpring(useTransform(py, [-1, 1], [7, -7]), {
     stiffness: 130,
     damping: 20,
@@ -74,12 +75,15 @@ export function LaboratoryHero() {
   });
 
   function onPointerEnter(event: React.PointerEvent<HTMLDivElement>) {
-    if (reduced) return;
+    finePointer.current = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+    if (reduced || !finePointer.current) return;
     pointerRect.current = event.currentTarget.getBoundingClientRect();
   }
 
   function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
-    if (reduced) return;
+    if (reduced || !finePointer.current) return;
     const rect =
       pointerRect.current ?? event.currentTarget.getBoundingClientRect();
     pointerRect.current = rect;
@@ -89,6 +93,7 @@ export function LaboratoryHero() {
 
   function onPointerLeave() {
     pointerRect.current = null;
+    finePointer.current = false;
     px.set(0);
     py.set(0);
   }
@@ -105,10 +110,14 @@ export function LaboratoryHero() {
         className="absolute -left-[20%] top-[10%] h-[70vw] w-[70vw] rounded-full bg-[radial-gradient(circle,rgba(20,110,245,0.16)_0%,rgba(20,110,245,0.07)_42%,transparent_72%)]"
         animate={
           reduced || !active
-            ? undefined
+            ? { scale: 1, opacity: 0.35 }
             : { scale: [0.9, 1.1, 0.9], opacity: [0.35, 0.6, 0.35] }
         }
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        transition={
+          reduced || !active
+            ? { duration: 0 }
+            : { duration: 9, repeat: Infinity, ease: "easeInOut" }
+        }
       />
 
       <div className="container-editorial relative grid min-h-[calc(100svh-12rem)] items-center gap-16 lg:grid-cols-12 lg:gap-12">
@@ -116,18 +125,13 @@ export function LaboratoryHero() {
           className="relative z-10 lg:col-span-6 xl:col-span-6"
           style={reduced ? undefined : { y: copyY, opacity: copyOpacity }}
         >
-          <motion.div
-            className="mb-6 flex items-center gap-3"
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.18, ease: easings.easeOut }}
-          >
+          <div className="mb-6 flex items-center gap-3">
             <span className="h-px w-9 bg-coral" />
             <span className="brand-label text-blue">El Bouni · Annaba</span>
             <span className="hidden text-[0.62rem] text-white/38 sm:inline">
               Médecine de précision
             </span>
-          </motion.div>
+          </div>
 
           <h1 className="max-w-[11ch] font-display text-[clamp(3.35rem,7vw,7.3rem)] leading-[0.86] tracking-[-0.055em] text-white">
             <span className="block">Votre sang</span>
@@ -137,25 +141,15 @@ export function LaboratoryHero() {
             </span>
           </h1>
 
-          <motion.p
-            className="mt-7 max-w-xl text-base leading-7 text-plasma/72 md:text-lg"
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.55, ease: easings.easeOut }}
-          >
+          <p className="mt-7 max-w-xl text-base leading-7 text-plasma/72 md:text-lg">
             Analyses médicales et expertise en hématologie pour transformer un
             résultat en une prochaine étape claire.
             <span dir="rtl" className="mt-2 block font-medium text-white/86">
               تحاليل طبية وطب أمراض الدم
             </span>
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="mt-8 flex flex-wrap gap-3"
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.68, ease: easings.easeOut }}
-          >
+          <div className="mt-8 flex flex-wrap gap-3">
             <MagneticButton
               as="a"
               href="/rendez-vous"
@@ -170,14 +164,9 @@ export function LaboratoryHero() {
             >
               Préparer mon analyse
             </a>
-          </motion.div>
+          </div>
 
-          <motion.div
-            className="mt-10 grid max-w-xl grid-cols-3 border-y border-white/10"
-            initial={false}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.82 }}
-          >
+          <div className="mt-10 grid max-w-xl grid-cols-3 border-y border-white/10">
             {[
               [FlaskConical, "Analyses"],
               [Microscope, "Hématologie"],
@@ -196,7 +185,7 @@ export function LaboratoryHero() {
                 </div>
               );
             })}
-          </motion.div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -262,39 +251,28 @@ export function LaboratoryHero() {
             </motion.svg>
           )}
 
-          <motion.div
-            className="relative"
-            initial={false}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.08, ease: easings.easeOut }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
+          <div className="relative" style={{ transformStyle: "preserve-3d" }}>
             <motion.div
-              animate={reduced || !active ? undefined : { y: [0, -9, 0] }}
-              transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+              animate={reduced || !active ? { y: 0 } : { y: [0, -9, 0] }}
+              transition={
+                reduced || !active
+                  ? { duration: 0 }
+                  : { duration: 9, repeat: Infinity, ease: "easeInOut" }
+              }
               style={{
                 rotateX: reduced ? undefined : rotateX,
                 rotateY: reduced ? undefined : rotateY,
                 transformStyle: "preserve-3d",
               }}
             >
-              <motion.div
-                className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem] border border-white/12 bg-midnight shadow-[0_55px_100px_-36px_rgba(0,0,0,0.8)]"
-                initial={false}
-                animate={{ clipPath: "inset(0)" }}
-                transition={{
-                  duration: 0.9,
-                  delay: 0.12,
-                  ease: easings.easeInOut,
-                }}
-              >
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem] border border-white/12 bg-midnight shadow-[0_55px_100px_-36px_rgba(0,0,0,0.8)]">
                 <picture className="block h-full w-full">
                   <source
                     type="image/avif"
                     srcSet={`${heroDiagnostic640} 640w, ${heroDiagnostic1080} 1080w`}
                     sizes="(min-width: 1024px) 540px, calc(100vw - 40px)"
                   />
-                  <motion.img
+                  <img
                     src={heroDiagnostic}
                     alt="Cellule sanguine observée dans un champ diagnostique"
                     className="h-full w-full object-cover"
@@ -302,13 +280,6 @@ export function LaboratoryHero() {
                     height={941}
                     fetchPriority="high"
                     decoding="async"
-                    initial={false}
-                    animate={{ scale: 1 }}
-                    transition={{
-                      duration: 1.35,
-                      delay: 0.1,
-                      ease: easings.easeOut,
-                    }}
                   />
                 </picture>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,17,29,0.03),rgba(3,17,29,0.12)_45%,rgba(3,17,29,0.78)_100%)]" />
@@ -340,11 +311,15 @@ export function LaboratoryHero() {
                   />
                 )}
                 <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full border border-white/12 bg-midnight/60 px-3 py-2 font-mono text-[0.55rem] tracking-[0.16em] text-white/70 backdrop-blur">
-                  <motion.span
-                    className="h-1.5 w-1.5 rounded-full bg-coral"
-                    animate={reduced ? undefined : { opacity: [0.3, 1, 0.3] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
+                  {!reduced && active ? (
+                    <motion.span
+                      className="h-1.5 w-1.5 rounded-full bg-coral"
+                      animate={{ opacity: [0.3, 1, 0.3] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
+                  ) : (
+                    <span className="h-1.5 w-1.5 rounded-full bg-coral" />
+                  )}
                   LIVE CELL FIELD
                 </div>
                 <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
@@ -361,9 +336,9 @@ export function LaboratoryHero() {
                     7.777° E
                   </span>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
-          </motion.div>
+          </div>
 
           {!reduced && active && (
             <div
@@ -410,12 +385,18 @@ export function LaboratoryHero() {
         transition={{ delay: 1.2 }}
       >
         Explorer
-        <motion.span
-          animate={reduced ? undefined : { y: [0, 6, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity }}
-        >
-          <ArrowDown className="h-4 w-4 text-coral" />
-        </motion.span>
+        {!reduced && active ? (
+          <motion.span
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity }}
+          >
+            <ArrowDown className="h-4 w-4 text-coral" />
+          </motion.span>
+        ) : (
+          <span>
+            <ArrowDown className="h-4 w-4 text-coral" />
+          </span>
+        )}
       </motion.a>
     </section>
   );

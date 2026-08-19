@@ -1,12 +1,19 @@
-import { useMemo, useState } from "react";
+import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { motion, AnimatePresence } from "motion/react";
-import { Check, ArrowRight, ArrowLeft, MessageCircle, Phone } from "lucide-react";
+import {
+  Check,
+  ArrowRight,
+  ArrowLeft,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
 import { allServices } from "@/content/services";
 import { clinic } from "@/content/clinic";
 import { submitAppointment } from "@/lib/appointments.functions";
 import { track } from "@/lib/analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { useReducedMotionMode } from "@/motion/hooks";
 
 type FormData = {
   service: string;
@@ -42,39 +49,74 @@ function makeIdempotencyKey(): string {
 }
 
 function tomorrowISO(): string {
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  return d.toISOString().slice(0, 10);
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Africa/Algiers",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+      .formatToParts(new Date())
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value]),
+  );
+  const date = new Date(
+    Date.UTC(
+      Number(parts.year),
+      Number(parts.month) - 1,
+      Number(parts.day) + 1,
+    ),
+  );
+  return date.toISOString().slice(0, 10);
 }
 
 function readUTM(): Record<string, string> | null {
   if (typeof window === "undefined") return null;
   const params = new URLSearchParams(window.location.search);
   const out: Record<string, string> = {};
-  ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach((k) => {
+  [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "utm_term",
+  ].forEach((k) => {
     const v = params.get(k);
     if (v) out[k] = v.slice(0, 200);
   });
   return Object.keys(out).length ? out : null;
 }
 
-export function AppointmentFunnel({ initialService }: { initialService?: string }) {
+export function AppointmentFunnel({
+  initialService,
+}: {
+  initialService?: string;
+}) {
+  const normalizedInitialService =
+    initialService &&
+    allServices.some((service) => service.slug === initialService)
+      ? initialService
+      : "";
   const [step, setStep] = useState(0);
   const [data, setData] = useState<FormData>({
     ...initial,
-    service: initialService ?? "",
+    service: normalizedInitialService,
   });
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const idempotencyKey = useMemo(makeIdempotencyKey, []);
+  const idempotencyKeyRef = useRef<string | null>(null);
+  const reducedMotion = useReducedMotionMode();
   const submitFn = useServerFn(submitAppointment);
 
   const minDate = tomorrowISO();
 
   const canNext =
-    (step === 0 && data.service !== "") ||
-    (step === 1 && data.name.trim().length >= 2 && PHONE_RE.test(data.phone.replace(/\s/g, "")));
+    (step === 0 &&
+      allServices.some((service) => service.slug === data.service)) ||
+    (step === 1 &&
+      data.name.trim().length >= 2 &&
+      PHONE_RE.test(data.phone.replace(/\s/g, "")));
 
   const handleSubmit = async () => {
     if (submitting || done) return;
@@ -85,8 +127,11 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
     setError(null);
     setSubmitting(true);
     try {
+      const idempotencyKey = idempotencyKeyRef.current ?? makeIdempotencyKey();
+      idempotencyKeyRef.current = idempotencyKey;
       const utm = readUTM();
-      const sourcePage = typeof window !== "undefined" ? window.location.pathname : null;
+      const sourcePage =
+        typeof window !== "undefined" ? window.location.pathname : null;
       await submitFn({
         data: {
           treatment: data.service || null,
@@ -121,9 +166,9 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
   if (done) {
     return (
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={reducedMotion ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: reducedMotion ? 0 : 0.5 }}
         className="rounded-3xl bg-mint p-10 md:p-14 text-center"
       >
         <div className="mx-auto h-16 w-16 rounded-full bg-petrol text-ivory flex items-center justify-center">
@@ -133,12 +178,17 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
           Votre demande a bien été transmise.
         </h3>
         <p className="mt-4 text-ink/70 max-w-md mx-auto">
-          L'équipe du laboratoire Dr Tarfaya vous contactera pour confirmer la prochaine étape.
+          L'équipe du laboratoire Dr Tarfaya vous contactera pour confirmer la
+          prochaine étape.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <a
-            href={buildWhatsAppUrl("default", { sourcePage: "Confirmation RDV" })}
-            onClick={() => track("whatsapp_clicked", { from: "appointment_success" })}
+            href={buildWhatsAppUrl("default", {
+              sourcePage: "Confirmation RDV",
+            })}
+            onClick={() =>
+              track("whatsapp_clicked", { from: "appointment_success" })
+            }
             className="inline-flex items-center gap-2 rounded-full bg-petrol text-ivory px-6 py-3 text-sm"
           >
             <MessageCircle className="h-4 w-4" />
@@ -146,7 +196,9 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
           </a>
           <a
             href={clinic.phoneHref}
-            onClick={() => track("phone_clicked", { from: "appointment_success" })}
+            onClick={() =>
+              track("phone_clicked", { from: "appointment_success" })
+            }
             className="inline-flex items-center gap-2 rounded-full border border-petrol/25 text-petrol px-6 py-3 text-sm"
           >
             <Phone className="h-4 w-4" />
@@ -158,11 +210,23 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
   }
 
   return (
-    <div className="rounded-3xl border border-border bg-card p-6 md:p-10">
+    <form
+      className="rounded-3xl border border-border bg-card p-6 md:p-10"
+      aria-busy={submitting}
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (step < 2) {
+          if (canNext) setStep(step + 1);
+          return;
+        }
+        void handleSubmit();
+      }}
+    >
       <div className="flex items-center gap-3 mb-8">
         {[0, 1, 2].map((s) => (
           <div key={s} className="flex-1">
             <div
+              aria-current={s === step ? "step" : undefined}
               className={`h-1 rounded-full transition-colors ${
                 s <= step ? "bg-teal" : "bg-border"
               }`}
@@ -174,14 +238,14 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {step === 0 && (
           <motion.div
             key="s0"
-            initial={{ opacity: 0, x: 10 }}
+            initial={reducedMotion ? false : { opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.3 }}
+            exit={reducedMotion ? undefined : { opacity: 0, x: -10 }}
+            transition={{ duration: reducedMotion ? 0 : 0.3 }}
           >
             <h3 className="font-serif text-2xl md:text-3xl text-petrol mb-6">
               Quelle est votre demande ?
@@ -191,6 +255,7 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
                 <button
                   key={s.slug}
                   type="button"
+                  aria-pressed={data.service === s.slug}
                   onClick={() => setData({ ...data, service: s.slug })}
                   className={`text-left rounded-xl border p-4 transition-all ${
                     data.service === s.slug
@@ -209,13 +274,15 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
         {step === 1 && (
           <motion.div
             key="s1"
-            initial={{ opacity: 0, x: 10 }}
+            initial={reducedMotion ? false : { opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.3 }}
+            exit={reducedMotion ? undefined : { opacity: 0, x: -10 }}
+            transition={{ duration: reducedMotion ? 0 : 0.3 }}
             className="space-y-5"
           >
-            <h3 className="font-serif text-2xl md:text-3xl text-petrol mb-2">Vos coordonnées</h3>
+            <h3 className="font-serif text-2xl md:text-3xl text-petrol mb-2">
+              Vos coordonnées
+            </h3>
             <Field
               label="Nom et prénom"
               value={data.name}
@@ -248,8 +315,10 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
                 </label>
                 <select
                   value={data.preferredTime}
-                  onChange={(e) => setData({ ...data, preferredTime: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/30"
+                  onChange={(e) =>
+                    setData({ ...data, preferredTime: e.target.value })
+                  }
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-base focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/30 sm:text-sm"
                 >
                   <option value="">Sans préférence</option>
                   <option value="matin">Matin</option>
@@ -266,6 +335,7 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
                   <button
                     key={m}
                     type="button"
+                    aria-pressed={data.contactMethod === m}
                     onClick={() => setData({ ...data, contactMethod: m })}
                     className={`rounded-xl border py-3 text-sm transition-colors ${
                       data.contactMethod === m
@@ -284,10 +354,10 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
         {step === 2 && (
           <motion.div
             key="s2"
-            initial={{ opacity: 0, x: 10 }}
+            initial={reducedMotion ? false : { opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.3 }}
+            exit={reducedMotion ? undefined : { opacity: 0, x: -10 }}
+            transition={{ duration: reducedMotion ? 0 : 0.3 }}
             className="space-y-4"
           >
             <h3 className="font-serif text-2xl md:text-3xl text-petrol mb-2">
@@ -302,7 +372,7 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
                 onChange={(e) => setData({ ...data, message: e.target.value })}
                 rows={4}
                 maxLength={1000}
-                className="w-full rounded-xl border border-input bg-background p-4 text-sm focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/30"
+                className="w-full rounded-xl border border-input bg-background p-4 text-base focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/30 sm:text-sm"
                 placeholder="Décrivez brièvement votre situation si vous le souhaitez."
               />
             </label>
@@ -310,12 +380,20 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
             <div className="rounded-xl bg-mint/40 p-4 text-sm text-petrol">
               <div className="font-medium mb-1">Récapitulatif</div>
               <ul className="text-ink/70 space-y-0.5">
-                <li>Demande : {allServices.find((s) => s.slug === data.service)?.name}</li>
+                <li>
+                  Demande :{" "}
+                  {allServices.find((s) => s.slug === data.service)?.name}
+                </li>
                 <li>Nom : {data.name}</li>
                 <li>Téléphone : {data.phone}</li>
-                {data.preferredDate && <li>Date souhaitée : {data.preferredDate}</li>}
+                {data.preferredDate && (
+                  <li>Date souhaitée : {data.preferredDate}</li>
+                )}
                 {data.preferredTime && <li>Créneau : {data.preferredTime}</li>}
-                <li>Contact : {data.contactMethod === "whatsapp" ? "WhatsApp" : "Téléphone"}</li>
+                <li>
+                  Contact :{" "}
+                  {data.contactMethod === "whatsapp" ? "WhatsApp" : "Téléphone"}
+                </li>
               </ul>
             </div>
 
@@ -323,19 +401,27 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
               <input
                 type="checkbox"
                 checked={data.consent}
-                onChange={(e) => setData({ ...data, consent: e.target.checked })}
+                onChange={(e) =>
+                  setData({ ...data, consent: e.target.checked })
+                }
                 className="mt-0.5 h-4 w-4 accent-teal"
               />
               <span>
-                J'accepte d'être recontacté·e par le laboratoire au sujet de ma demande. Aucune
-                information n'est utilisée à des fins commerciales.
+                J'accepte d'être recontacté·e par le laboratoire au sujet de ma
+                demande. Aucune information n'est utilisée à des fins
+                commerciales.
               </span>
             </label>
 
             <p className="text-xs text-ink/50">
-              La demande nécessite une confirmation manuelle par l'équipe — vous serez recontacté·e.
+              La demande nécessite une confirmation manuelle par l'équipe — vous
+              serez recontacté·e.
             </p>
-            {error && <p className="text-xs text-destructive">{error}</p>}
+            {error && (
+              <p role="alert" className="text-xs text-destructive">
+                {error}
+              </p>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
@@ -356,25 +442,23 @@ export function AppointmentFunnel({ initialService }: { initialService?: string 
 
         {step < 2 ? (
           <button
-            type="button"
+            type="submit"
             disabled={!canNext}
-            onClick={() => setStep(step + 1)}
             className="inline-flex items-center gap-2 rounded-full bg-petrol text-ivory px-6 py-3 text-sm disabled:opacity-40 hover:bg-ink transition-colors"
           >
             Continuer <ArrowRight className="h-4 w-4" />
           </button>
         ) : (
           <button
-            type="button"
+            type="submit"
             disabled={submitting}
-            onClick={handleSubmit}
             className="inline-flex items-center gap-2 rounded-full bg-petrol text-ivory px-6 py-3 text-sm disabled:opacity-60 hover:bg-ink transition-colors"
           >
             {submitting ? "Envoi…" : "Demander un rendez-vous"}
           </button>
         )}
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -401,7 +485,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-xs uppercase tracking-wider text-ink/60 mb-2">{label}</span>
+      <span className="block text-xs uppercase tracking-wider text-ink/60 mb-2">
+        {label}
+      </span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -410,7 +496,7 @@ function Field({
         placeholder={placeholder}
         min={min}
         maxLength={maxLength}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/30"
+        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-base focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/30 sm:text-sm"
       />
       {hint && <span className="mt-1.5 block text-xs text-ink/50">{hint}</span>}
     </label>

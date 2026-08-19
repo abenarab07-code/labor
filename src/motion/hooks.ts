@@ -54,15 +54,30 @@ export function useLowPowerMode() {
     try {
       const nav = navigator as Navigator & {
         deviceMemory?: number;
-        connection?: { saveData?: boolean; effectiveType?: string };
+        connection?: {
+          saveData?: boolean;
+          effectiveType?: string;
+          addEventListener?: (type: "change", listener: () => void) => void;
+          removeEventListener?: (type: "change", listener: () => void) => void;
+        };
       };
-      const saveData = !!nav.connection?.saveData;
-      const slow = /(2g|3g)/.test(nav.connection?.effectiveType ?? "");
       const fewCores = (nav.hardwareConcurrency ?? 8) <= 4;
       const lowMem = (nav.deviceMemory ?? 8) <= 4;
-      const coarse = window.matchMedia("(pointer: coarse)").matches;
-      const narrow = window.innerWidth < 768;
-      setLow(saveData || slow || (coarse && narrow) || fewCores || lowMem);
+      const coarseNarrow = window.matchMedia(
+        "(pointer: coarse) and (max-width: 767px)",
+      );
+      const update = () => {
+        const saveData = !!nav.connection?.saveData;
+        const slow = /(2g|3g)/.test(nav.connection?.effectiveType ?? "");
+        setLow(saveData || slow || coarseNarrow.matches || fewCores || lowMem);
+      };
+      update();
+      coarseNarrow.addEventListener("change", update);
+      nav.connection?.addEventListener?.("change", update);
+      return () => {
+        coarseNarrow.removeEventListener("change", update);
+        nav.connection?.removeEventListener?.("change", update);
+      };
     } catch {
       /* noop */
     }

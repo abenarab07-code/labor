@@ -1,20 +1,25 @@
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotionMode } from "@/motion/hooks";
 import { Logo } from "./Logo";
 
 const navigation = [
-  { href: "/#analyses", label: "Analyses" },
-  { href: "/#hematologie", label: "Hématologie" },
-  { href: "/#parcours", label: "Votre visite" },
-  { href: "/#docteur", label: "Dr Tarfaya" },
-  { href: "/#contact", label: "Contact" },
+  { hash: "analyses", label: "Analyses" },
+  { hash: "hematologie", label: "Hématologie" },
+  { hash: "parcours", label: "Votre visite" },
+  { hash: "docteur", label: "Dr Tarfaya" },
+  { hash: "contact", label: "Contact" },
 ];
+
+const MotionLink = motion.create(Link);
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const reducedMotion = useReducedMotionMode();
 
   useEffect(() => {
     let lastScrolled = window.scrollY > 34;
@@ -31,8 +36,20 @@ export function Header() {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const frame = window.requestAnimationFrame(() =>
+      closeButtonRef.current?.focus(),
+    );
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
     return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
+      previousFocus?.focus();
     };
   }, [open]);
 
@@ -55,9 +72,11 @@ export function Header() {
             aria-label="Navigation principale"
           >
             {navigation.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
+              <Link
+                key={item.hash}
+                to="/"
+                hash={item.hash}
+                activeOptions={{ exact: true, includeHash: true }}
                 className={`text-[0.72rem] font-semibold uppercase tracking-[0.13em] transition-colors ${
                   scrolled
                     ? "text-midnight/65 hover:text-blue"
@@ -65,13 +84,14 @@ export function Header() {
                 }`}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
             <Link
               to="/rendez-vous"
+              preload="intent"
               className={`hidden items-center gap-2 rounded-md px-4 py-3 text-xs font-semibold uppercase tracking-[0.08em] transition-colors sm:inline-flex ${
                 scrolled
                   ? "bg-midnight text-plasma hover:bg-blue"
@@ -90,6 +110,8 @@ export function Header() {
                   : "border-white/20 text-white"
               }`}
               aria-label="Ouvrir le menu"
+              aria-expanded={open}
+              aria-controls="mobile-navigation"
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -97,18 +119,33 @@ export function Header() {
         </div>
       </header>
 
-      <AnimatePresence>
+      <AnimatePresence initial={!reducedMotion}>
         {open && (
           <motion.div
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation principale"
             className="fixed inset-0 z-[70] overflow-y-auto bg-midnight text-plasma"
-            initial={{ clipPath: "circle(0% at 90% 5%)" }}
+            initial={
+              reducedMotion ? false : { clipPath: "circle(0% at 90% 5%)" }
+            }
             animate={{ clipPath: "circle(150% at 90% 5%)" }}
-            exit={{ clipPath: "circle(0% at 90% 5%)" }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            exit={
+              reducedMotion
+                ? { opacity: 0 }
+                : { clipPath: "circle(0% at 90% 5%)" }
+            }
+            transition={
+              reducedMotion
+                ? { duration: 0 }
+                : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+            }
           >
             <div className="container-editorial flex h-[4.65rem] items-center justify-between">
               <Logo variant="light" />
               <button
+                ref={closeButtonRef}
                 type="button"
                 onClick={() => setOpen(false)}
                 className="grid h-11 w-11 place-items-center rounded-full border border-white/20"
@@ -119,23 +156,30 @@ export function Header() {
             </div>
             <nav className="container-editorial pb-12 pt-10">
               {navigation.map((item, index) => (
-                <motion.a
-                  key={item.href}
-                  href={item.href}
+                <MotionLink
+                  key={item.hash}
+                  to="/"
+                  hash={item.hash}
+                  activeOptions={{ exact: true, includeHash: true }}
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-between border-b border-white/10 py-5 font-display text-[clamp(2rem,10vw,4rem)] leading-none"
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={reducedMotion ? false : { opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08 + index * 0.05 }}
+                  transition={
+                    reducedMotion
+                      ? { duration: 0 }
+                      : { delay: 0.08 + index * 0.05 }
+                  }
                 >
                   {item.label}
                   <span className="font-sans text-xs text-blue">
                     0{index + 1}
                   </span>
-                </motion.a>
+                </MotionLink>
               ))}
               <Link
                 to="/rendez-vous"
+                preload="intent"
                 onClick={() => setOpen(false)}
                 className="mt-8 inline-flex w-full items-center justify-between rounded-md bg-blue px-5 py-4 font-semibold text-white"
               >

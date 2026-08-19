@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const inviteSchema = z.object({
@@ -15,7 +16,7 @@ const setActiveSchema = z.object({
 });
 
 export const inviteTeamMemberFn = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .inputValidator((d: unknown) => inviteSchema.parse(d))
   .handler(async ({ data, context }) => {
     // Verify caller is admin via authenticated client (RLS-safe)
@@ -32,7 +33,7 @@ export const inviteTeamMemberFn = createServerFn({ method: "POST" })
   });
 
 export const setTeamMemberActiveFn = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([attachSupabaseAuth, requireSupabaseAuth])
   .inputValidator((d: unknown) => setActiveSchema.parse(d))
   .handler(async ({ data, context }) => {
     const { data: roles, error } = await context.supabase

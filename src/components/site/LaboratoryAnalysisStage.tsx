@@ -22,10 +22,13 @@ import {
 } from "@/motion/hooks";
 import labAnalysis from "@/assets/brand/lab-analysis.webp";
 import labAnalysisAvif from "@/assets/brand/lab-analysis.avif";
+import labAnalysisMobileAvif from "@/assets/brand/lab-analysis-768.avif";
 import bloodSmear from "@/assets/brand/blood-smear.webp";
 import bloodSmearAvif from "@/assets/brand/blood-smear.avif";
+import bloodSmearMobileAvif from "@/assets/brand/blood-smear-768.avif";
 import doctorPoster from "@/assets/brand/dr-tarfaya-poster-clean.webp";
 import doctorPosterAvif from "@/assets/brand/dr-tarfaya-poster-clean.avif";
+import doctorPosterMobileAvif from "@/assets/brand/dr-tarfaya-poster-clean-768.avif";
 
 const analyses = [
   {
@@ -36,6 +39,7 @@ const analyses = [
     points: ["Biochimie", "Bactériologie", "Sérologie", "Hormones"],
     image: labAnalysis,
     avif: labAnalysisAvif,
+    mobileAvif: labAnalysisMobileAvif,
     icon: FlaskConical,
     position: "object-center",
   },
@@ -47,6 +51,7 @@ const analyses = [
     points: ["Frottis sanguin", "Cytologie médullaire", "Lecture spécialisée"],
     image: bloodSmear,
     avif: bloodSmearAvif,
+    mobileAvif: bloodSmearMobileAvif,
     icon: Microscope,
     position: "object-center",
   },
@@ -62,6 +67,7 @@ const analyses = [
     ],
     image: doctorPoster,
     avif: doctorPosterAvif,
+    mobileAvif: doctorPosterMobileAvif,
     icon: Stethoscope,
     position: "object-[50%_25%]",
   },
@@ -84,73 +90,90 @@ export function LaboratoryAnalysisStage() {
 
   return (
     <section ref={sectionRef} className="relative bg-plasma md:h-[300vh]">
-      <div className="container-editorial py-24 md:hidden">
-        <div className="brand-label text-blue">Le bon niveau de lecture</div>
-        <h2 className="mt-5 max-w-[12ch] font-display text-5xl leading-[0.9] tracking-[-0.045em] text-midnight">
-          Une analyse ne se résume pas à{" "}
-          <em className="text-blue">un chiffre.</em>
-        </h2>
-        <div className="mt-12 space-y-5">
-          {analyses.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <motion.article
-                key={item.number}
-                className="relative min-h-[520px] overflow-hidden rounded-[1.7rem] bg-midnight text-white"
-                initial={reduced ? { opacity: 1 } : { opacity: 0, y: 38 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.06,
-                  ease: easings.easeOut,
-                }}
-              >
-                <picture className="absolute inset-0 block">
-                  <source srcSet={item.avif} type="image/avif" />
-                  <motion.img
-                    src={item.image}
-                    alt=""
-                    className={`h-full w-full object-cover ${item.position}`}
-                    loading="lazy"
-                    decoding="async"
-                    initial={{ scale: reduced ? 1 : 1.08 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.4, ease: easings.easeOut }}
-                  />
-                </picture>
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,17,29,0.08),rgba(3,17,29,0.28)_35%,rgba(3,17,29,0.96)_100%)]" />
-                <div className="absolute left-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/16 bg-midnight/45 backdrop-blur">
-                  <Icon className="h-4 w-4 text-blue" />
-                </div>
-                <span className="absolute right-5 top-5 font-mono text-xs tracking-[0.16em] text-coral">
-                  {item.number}
-                </span>
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <div className="brand-label text-blue">{item.label}</div>
-                  <h3 className="mt-3 font-display text-4xl leading-[0.92] text-white">
-                    {item.title}
-                  </h3>
-                  <p className="mt-4 text-sm leading-6 text-white/68">
-                    {item.text}
-                  </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {item.points.map((point) => (
-                      <span
-                        key={point}
-                        className="rounded-full border border-white/14 bg-white/7 px-3 py-2 text-[0.65rem] text-white/72 backdrop-blur"
-                      >
-                        {point}
-                      </span>
-                    ))}
+      {!desktopStage ? (
+        <div className="container-editorial py-24 md:hidden">
+          <div className="brand-label text-blue">Le bon niveau de lecture</div>
+          <h2 className="mt-5 max-w-[12ch] font-display text-5xl leading-[0.9] tracking-[-0.045em] text-midnight">
+            Une analyse ne se résume pas à{" "}
+            <em className="text-blue">un chiffre.</em>
+          </h2>
+          <div className="mt-12 space-y-5">
+            {analyses.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.article
+                  key={item.number}
+                  className="relative min-h-[520px] overflow-hidden rounded-[1.7rem] bg-midnight text-white"
+                  initial={reduced ? false : { opacity: 0, y: 38 }}
+                  whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+                  viewport={
+                    reduced ? undefined : { once: true, margin: "-10%" }
+                  }
+                  transition={
+                    reduced
+                      ? undefined
+                      : {
+                          duration: 0.8,
+                          delay: index * 0.06,
+                          ease: easings.easeOut,
+                        }
+                  }
+                >
+                  <picture className="absolute inset-0 block">
+                    <source
+                      srcSet={item.mobileAvif}
+                      media="(max-width: 767px)"
+                      type="image/avif"
+                    />
+                    <source srcSet={item.avif} type="image/avif" />
+                    <motion.img
+                      src={item.image}
+                      alt=""
+                      className={`h-full w-full object-cover ${item.position}`}
+                      loading="lazy"
+                      decoding="async"
+                      initial={reduced ? false : { scale: 1.08 }}
+                      whileInView={reduced ? undefined : { scale: 1 }}
+                      viewport={reduced ? undefined : { once: true }}
+                      transition={
+                        reduced
+                          ? undefined
+                          : { duration: 1.4, ease: easings.easeOut }
+                      }
+                    />
+                  </picture>
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,17,29,0.08),rgba(3,17,29,0.28)_35%,rgba(3,17,29,0.96)_100%)]" />
+                  <div className="absolute left-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/16 bg-midnight/45 backdrop-blur">
+                    <Icon className="h-4 w-4 text-blue" />
                   </div>
-                </div>
-              </motion.article>
-            );
-          })}
+                  <span className="absolute right-5 top-5 font-mono text-xs tracking-[0.16em] text-coral">
+                    {item.number}
+                  </span>
+                  <div className="absolute inset-x-0 bottom-0 p-6">
+                    <div className="brand-label text-blue">{item.label}</div>
+                    <h3 className="mt-3 font-display text-4xl leading-[0.92] text-white">
+                      {item.title}
+                    </h3>
+                    <p className="mt-4 text-sm leading-6 text-white/68">
+                      {item.text}
+                    </p>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {item.points.map((point) => (
+                        <span
+                          key={point}
+                          className="rounded-full border border-white/14 bg-white/7 px-3 py-2 text-[0.65rem] text-white/72 backdrop-blur"
+                        >
+                          {point}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : null}
 
       {desktopStage ? (
         <DesktopAnalysisStage sectionRef={sectionRef} reduced={reduced} />
@@ -250,8 +273,12 @@ function DesktopAnalysisStage({
       <motion.div
         aria-hidden="true"
         className="absolute right-[8%] top-1/2 h-[42vw] w-[42vw] -translate-y-1/2 rounded-full border border-blue/18"
-        animate={reduced || !activeSection ? undefined : { rotate: 360 }}
-        transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
+        animate={reduced || !activeSection ? { rotate: 0 } : { rotate: 360 }}
+        transition={
+          reduced || !activeSection
+            ? { duration: 0 }
+            : { duration: 70, repeat: Infinity, ease: "linear" }
+        }
       >
         <span className="absolute inset-[13%] rounded-full border border-dashed border-white/22" />
         <span className="absolute left-[15%] top-[7%] h-2.5 w-2.5 rounded-full bg-coral shadow-[0_0_25px_7px_rgba(239,93,88,.38)]" />
@@ -310,6 +337,7 @@ function DesktopAnalysisStage({
               </div>
               <Link
                 to="/rendez-vous"
+                preload="intent"
                 className="mt-8 inline-flex items-center gap-3 border-b border-blue pb-2 text-sm font-semibold text-midnight transition-colors hover:text-blue"
               >
                 Organiser cette étape <ArrowUpRight className="h-4 w-4" />

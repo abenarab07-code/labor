@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { LaboratoryHero } from "@/components/site/LaboratoryHero";
 import { LaboratoryPageProgress } from "@/components/site/LaboratoryPageProgress";
@@ -13,11 +13,12 @@ const LaboratoryAfterFold = lazy(() =>
   })),
 );
 
-const LaboratoryAnalysisStage = lazy(() =>
+const loadLaboratoryAnalysisStage = () =>
   import("@/components/site/LaboratoryAnalysisStage").then((module) => ({
     default: module.LaboratoryAnalysisStage,
-  })),
-);
+  }));
+
+const LaboratoryAnalysisStage = lazy(loadLaboratoryAnalysisStage);
 
 const analysisHashes = ["analyses"] as const;
 const afterFoldHashes = [
@@ -59,15 +60,10 @@ export const Route = createFileRoute("/")({
         rel: "preload",
         as: "image",
         type: "image/avif",
-        href: heroDiagnostic640,
-        media: "(max-width: 767px)",
-      },
-      {
-        rel: "preload",
-        as: "image",
-        type: "image/avif",
         href: heroDiagnostic1080,
-        media: "(min-width: 768px)",
+        imageSrcSet: `${heroDiagnostic640} 640w, ${heroDiagnostic1080} 1080w`,
+        imageSizes: "(min-width: 1024px) 540px, calc(100vw - 40px)",
+        fetchPriority: "high",
       },
     ],
   }),
@@ -75,6 +71,28 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  useEffect(() => {
+    let prefetched = false;
+    const prefetchAnalysis = () => {
+      if (prefetched) return;
+      prefetched = true;
+      void loadLaboratoryAnalysisStage();
+    };
+    const passiveOnce = { passive: true, once: true } as const;
+    window.addEventListener("scroll", prefetchAnalysis, passiveOnce);
+    window.addEventListener("wheel", prefetchAnalysis, passiveOnce);
+    window.addEventListener("touchstart", prefetchAnalysis, passiveOnce);
+    window.addEventListener("pointerdown", prefetchAnalysis, passiveOnce);
+    window.addEventListener("keydown", prefetchAnalysis, { once: true });
+    return () => {
+      window.removeEventListener("scroll", prefetchAnalysis);
+      window.removeEventListener("wheel", prefetchAnalysis);
+      window.removeEventListener("touchstart", prefetchAnalysis);
+      window.removeEventListener("pointerdown", prefetchAnalysis);
+      window.removeEventListener("keydown", prefetchAnalysis);
+    };
+  }, []);
+
   return (
     <SiteShell>
       <LaboratoryPageProgress />
@@ -83,7 +101,6 @@ function Home() {
         id="analyses"
         className="scroll-mt-24 min-h-[1800px] md:min-h-[300svh]"
         rootMargin="-1px 0px"
-        idleAfterMs={1200}
         mountOnHash={analysisHashes}
       >
         <LaboratoryAnalysisStage />

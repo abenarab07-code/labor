@@ -8,9 +8,9 @@ import {
 } from "motion/react";
 import { ArrowDown, ArrowUpRight, FlaskConical, MapPin, Microscope } from "lucide-react";
 import { useRef } from "react";
-import { MaskedTextReveal, MagneticButton } from "@/motion/primitives";
+import { MagneticButton } from "@/motion/primitives";
 import { easings } from "@/motion/motion-tokens";
-import { useReducedMotionMode, useSectionActive } from "@/motion/hooks";
+import { useLowPowerMode, useReducedMotionMode, useSectionActive } from "@/motion/hooks";
 import { clinic } from "@/content/clinic";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import heroDiagnostic from "@/assets/brand/hero-diagnostic.webp";
@@ -24,7 +24,9 @@ const orbitDots = [
 
 export function LaboratoryHero() {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotionMode();
+  const reducedMotion = useReducedMotionMode();
+  const lowPower = useLowPowerMode();
+  const reduced = reducedMotion || lowPower;
   const active = useSectionActive(ref);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const spring = useSpring(scrollYProgress, { stiffness: 90, damping: 22, mass: 0.4 });
@@ -76,7 +78,7 @@ export function LaboratoryHero() {
         >
           <motion.div
             className="mb-6 flex items-center gap-3"
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.18, ease: easings.easeOut }}
           >
@@ -88,20 +90,16 @@ export function LaboratoryHero() {
           </motion.div>
 
           <h1 className="max-w-[11ch] font-display text-[clamp(3.35rem,7vw,7.3rem)] leading-[0.86] tracking-[-0.055em] text-white">
-            <span className="block">
-              <MaskedTextReveal delay={0.22}>Votre sang</MaskedTextReveal>
-            </span>
-            <span className="block italic text-blue">
-              <MaskedTextReveal delay={0.32}>raconte.</MaskedTextReveal>
-            </span>
+            <span className="block">Votre sang</span>
+            <span className="block italic text-blue">raconte.</span>
             <span className="mt-2 block text-[0.5em] leading-[0.98] tracking-[-0.035em]">
-              <MaskedTextReveal delay={0.42}>Nous savons le lire.</MaskedTextReveal>
+              Nous savons le lire.
             </span>
           </h1>
 
           <motion.p
             className="mt-7 max-w-xl text-base leading-7 text-plasma/72 md:text-lg"
-            initial={{ opacity: 0, y: 14 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.55, ease: easings.easeOut }}
           >
@@ -114,7 +112,7 @@ export function LaboratoryHero() {
 
           <motion.div
             className="mt-8 flex flex-wrap gap-3"
-            initial={{ opacity: 0, y: 12 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.68, ease: easings.easeOut }}
           >
@@ -136,7 +134,7 @@ export function LaboratoryHero() {
 
           <motion.div
             className="mt-10 grid max-w-xl grid-cols-3 border-y border-white/10"
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.82 }}
           >
@@ -221,7 +219,7 @@ export function LaboratoryHero() {
 
           <motion.div
             className="relative"
-            initial={{ opacity: 0, y: 28, scale: 0.97 }}
+            initial={false}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.08, ease: easings.easeOut }}
             style={{ transformStyle: "preserve-3d" }}
@@ -237,7 +235,7 @@ export function LaboratoryHero() {
             >
               <motion.div
                 className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem] border border-white/12 bg-midnight shadow-[0_55px_100px_-36px_rgba(0,0,0,0.8)]"
-                initial={{ clipPath: reduced ? "inset(0)" : "inset(100% 0 0 0)" }}
+                initial={false}
                 animate={{ clipPath: "inset(0)" }}
                 transition={{ duration: 0.9, delay: 0.12, ease: easings.easeInOut }}
               >
@@ -249,7 +247,7 @@ export function LaboratoryHero() {
                   height={941}
                   fetchPriority="high"
                   decoding="async"
-                  initial={{ scale: reduced ? 1 : 1.14 }}
+                  initial={false}
                   animate={{ scale: 1 }}
                   transition={{ duration: 1.35, delay: 0.1, ease: easings.easeOut }}
                 />

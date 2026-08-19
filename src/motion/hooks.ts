@@ -63,7 +63,7 @@ export function useLowPowerMode() {
       const lowMem = (nav.deviceMemory ?? 8) <= 4;
       const coarse = window.matchMedia("(pointer: coarse)").matches;
       const narrow = window.innerWidth < 768;
-      setLow(saveData || slow || (fewCores && (lowMem || coarse || narrow)));
+      setLow(saveData || slow || (coarse && narrow) || fewCores || lowMem);
     } catch {
       /* noop */
     }

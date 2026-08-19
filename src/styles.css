@@ -257,6 +257,16 @@
   }
 }
 
+/* Keep the editorial look while avoiding expensive GPU blur work on touch devices. */
+@media (max-width: 767px), (pointer: coarse) {
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 /* Blog article prose */
 .prose-article {
   color: var(--ink);

@@ -10,7 +10,7 @@ import { ArrowUpRight, FlaskConical, Microscope, Stethoscope } from "lucide-reac
 import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { easings } from "@/motion/motion-tokens";
-import { useReducedMotionMode, useSectionActive } from "@/motion/hooks";
+import { useLowPowerMode, useReducedMotionMode, useSectionActive } from "@/motion/hooks";
 import labAnalysis from "@/assets/brand/lab-analysis.webp";
 import bloodSmear from "@/assets/brand/blood-smear.webp";
 import doctorPoster from "@/assets/brand/dr-tarfaya-poster-clean.webp";
@@ -50,7 +50,9 @@ const analyses = [
 
 export function LaboratoryAnalysisStage() {
   const sectionRef = useRef<HTMLElement>(null);
-  const reduced = useReducedMotionMode();
+  const reducedMotion = useReducedMotionMode();
+  const lowPower = useLowPowerMode();
+  const reduced = reducedMotion || lowPower;
   const activeSection = useSectionActive(sectionRef);
   const [active, setActive] = useState(0);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });

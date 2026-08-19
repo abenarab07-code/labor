@@ -1,12 +1,9 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   AnimatePresence,
   motion,
   useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
 } from "motion/react";
 import {
   ArrowDown,
@@ -24,6 +21,7 @@ import {
 } from "lucide-react";
 import { clinic } from "@/content/clinic";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { useLowPowerMode } from "@/motion/hooks";
 import heroDiagnostic from "@/assets/brand/hero-diagnostic.webp";
 import labAnalysis from "@/assets/brand/lab-analysis.webp";
 import bloodSmear from "@/assets/brand/blood-smear.webp";
@@ -142,20 +140,17 @@ function Reveal({
 
 export function LaboratoryHome() {
   const legacyOpeningEnabled = false;
-  const reducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const lowPower = useLowPowerMode();
+  const reducedMotion = Boolean(prefersReducedMotion || lowPower);
   const [activeSpecialty, setActiveSpecialty] = useState(0);
   const specialty = specialties[activeSpecialty];
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll();
-  const { scrollYProgress: heroScroll } = useScroll({
-    target: legacyOpeningEnabled ? heroRef : undefined,
-    offset: ["start start", "end start"],
-  });
-  const progress = useSpring(scrollYProgress, { stiffness: 110, damping: 28, mass: 0.25 });
-  const heroImageY = useTransform(heroScroll, [0, 1], ["0%", "18%"]);
-  const heroImageScale = useTransform(heroScroll, [0, 1], [1.04, 1.16]);
-  const heroContentY = useTransform(heroScroll, [0, 1], [0, 110]);
-  const heroContentOpacity = useTransform(heroScroll, [0, 0.72], [1, 0]);
+  const heroRef = { current: null as HTMLElement | null };
+  const progress = 1;
+  const heroImageY = "0%";
+  const heroImageScale = 1;
+  const heroContentY = 0;
+  const heroContentOpacity = 1;
 
   return (
     <>

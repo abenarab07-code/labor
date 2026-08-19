@@ -1,0 +1,20 @@
+:root {
+  --dt-midnight: #071a2b;
+  --dt-midnight-deep: #03111d;
+  --dt-blue: #146ef5;
+  --dt-blue-dark: #0a4cb5;
+  --dt-coral: #ef5d58;
+  --dt-coral-dark: #c93f3a;
+  --dt-plasma: #f7f4ee;
+  --dt-white: #fffdfc;
+  --dt-slate: #536372;
+  --dt-mist: #d9e1e7;
+  --dt-space-1: 0.5rem;
+  --dt-space-2: 1rem;
+  --dt-space-3: 1.5rem;
+  --dt-space-4: 2rem;
+  --dt-space-6: 3rem;
+  --dt-space-10: 5rem;
+  --dt-radius-control: 0.375rem;
+  --dt-radius-media: 1.5rem;
+}

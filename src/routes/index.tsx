@@ -19,21 +19,35 @@ const LaboratoryAnalysisStage = lazy(() =>
   })),
 );
 
+const analysisHashes = ["analyses"] as const;
+const afterFoldHashes = [
+  "hematologie",
+  "parcours",
+  "docteur",
+  "questions",
+  "contact",
+] as const;
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Laboratoire Dr Tarfaya | Analyses & Hématologie à El Bouni, Annaba",
+        title:
+          "Laboratoire Dr Tarfaya | Analyses & Hématologie à El Bouni, Annaba",
       },
       {
         name: "description",
         content:
           "Laboratoire d'analyses médicales, prélèvements et consultation spécialisée en hématologie à El Bouni, Annaba. Contact WhatsApp et demande de rendez-vous.",
       },
-      { property: "og:title", content: "Dr Tarfaya — Votre sang raconte. Nous savons le lire." },
+      {
+        property: "og:title",
+        content: "Dr Tarfaya — Votre sang raconte. Nous savons le lire.",
+      },
       {
         property: "og:description",
-        content: "Analyses médicales et expertise en hématologie à El Bouni, Annaba.",
+        content:
+          "Analyses médicales et expertise en hématologie à El Bouni, Annaba.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -65,10 +79,20 @@ function Home() {
     <SiteShell>
       <LaboratoryPageProgress />
       <LaboratoryHero />
-      <LazyInView minHeight={1800} rootMargin="-1px 0px" idleAfterMs={1200}>
+      <LazyInView
+        id="analyses"
+        className="scroll-mt-24 min-h-[1800px] md:min-h-[300svh]"
+        rootMargin="-1px 0px"
+        idleAfterMs={1200}
+        mountOnHash={analysisHashes}
+      >
         <LaboratoryAnalysisStage />
       </LazyInView>
-      <LazyInView minHeight={3600} rootMargin="900px 0px">
+      <LazyInView
+        minHeight={3600}
+        rootMargin="900px 0px"
+        mountOnHash={afterFoldHashes}
+      >
         <LaboratoryAfterFold />
       </LazyInView>
     </SiteShell>

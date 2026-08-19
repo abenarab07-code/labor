@@ -17,8 +17,14 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 34);
-    update();
+    let lastScrolled = window.scrollY > 34;
+    const update = () => {
+      const nextScrolled = window.scrollY > 34;
+      if (nextScrolled === lastScrolled) return;
+      lastScrolled = nextScrolled;
+      setScrolled(nextScrolled);
+    };
+    setScrolled(lastScrolled);
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
   }, []);
@@ -44,13 +50,18 @@ export function Header() {
             <Logo variant={scrolled ? "dark" : "light"} />
           </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Navigation principale">
+          <nav
+            className="hidden items-center gap-7 lg:flex"
+            aria-label="Navigation principale"
+          >
             {navigation.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 className={`text-[0.72rem] font-semibold uppercase tracking-[0.13em] transition-colors ${
-                  scrolled ? "text-midnight/65 hover:text-blue" : "text-plasma/70 hover:text-white"
+                  scrolled
+                    ? "text-midnight/65 hover:text-blue"
+                    : "text-plasma/70 hover:text-white"
                 }`}
               >
                 {item.label}
@@ -74,7 +85,9 @@ export function Header() {
               type="button"
               onClick={() => setOpen(true)}
               className={`grid h-11 w-11 place-items-center rounded-full border lg:hidden ${
-                scrolled ? "border-midnight/15 text-midnight" : "border-white/20 text-white"
+                scrolled
+                  ? "border-midnight/15 text-midnight"
+                  : "border-white/20 text-white"
               }`}
               aria-label="Ouvrir le menu"
             >
@@ -116,7 +129,9 @@ export function Header() {
                   transition={{ delay: 0.08 + index * 0.05 }}
                 >
                   {item.label}
-                  <span className="font-sans text-xs text-blue">0{index + 1}</span>
+                  <span className="font-sans text-xs text-blue">
+                    0{index + 1}
+                  </span>
                 </motion.a>
               ))}
               <Link

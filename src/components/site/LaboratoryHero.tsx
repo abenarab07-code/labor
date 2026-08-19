@@ -1,16 +1,25 @@
 import {
   motion,
-  useMotionTemplate,
   useMotionValue,
   useScroll,
   useSpring,
   useTransform,
 } from "motion/react";
-import { ArrowDown, ArrowUpRight, FlaskConical, MapPin, Microscope } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  FlaskConical,
+  MapPin,
+  Microscope,
+} from "lucide-react";
 import { useRef } from "react";
 import { MagneticButton } from "@/motion/primitives";
 import { easings } from "@/motion/motion-tokens";
-import { useLowPowerMode, useReducedMotionMode, useSectionActive } from "@/motion/hooks";
+import {
+  useLowPowerMode,
+  useReducedMotionMode,
+  useSectionActive,
+} from "@/motion/hooks";
 import { clinic } from "@/content/clinic";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import heroDiagnostic from "@/assets/brand/hero-diagnostic.webp";
@@ -30,8 +39,15 @@ export function LaboratoryHero() {
   const lowPower = useLowPowerMode();
   const reduced = reducedMotion || lowPower;
   const active = useSectionActive(ref);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const spring = useSpring(scrollYProgress, { stiffness: 90, damping: 22, mass: 0.4 });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const spring = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 22,
+    mass: 0.4,
+  });
   const copyY = useTransform(spring, [0, 1], [0, -38]);
   const copyOpacity = useTransform(spring, [0, 0.7, 1], [1, 0.62, 0.08]);
   const mediaY = useTransform(spring, [0, 1], [0, 82]);
@@ -39,20 +55,40 @@ export function LaboratoryHero() {
 
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const rotateX = useSpring(useTransform(py, [-1, 1], [7, -7]), { stiffness: 130, damping: 20 });
-  const rotateY = useSpring(useTransform(px, [-1, 1], [-9, 9]), { stiffness: 130, damping: 20 });
-  const glowX = useSpring(useTransform(px, [-1, 1], [-48, 48]), { stiffness: 100, damping: 22 });
-  const glowY = useSpring(useTransform(py, [-1, 1], [-42, 42]), { stiffness: 100, damping: 22 });
-  const sheen = useMotionTemplate`radial-gradient(55% 45% at calc(50% + ${glowX}px) calc(40% + ${glowY}px), rgba(115,190,255,0.34), rgba(20,110,245,0.08) 50%, transparent 78%)`;
+  const pointerRect = useRef<DOMRect | null>(null);
+  const rotateX = useSpring(useTransform(py, [-1, 1], [7, -7]), {
+    stiffness: 130,
+    damping: 20,
+  });
+  const rotateY = useSpring(useTransform(px, [-1, 1], [-9, 9]), {
+    stiffness: 130,
+    damping: 20,
+  });
+  const glowX = useSpring(useTransform(px, [-1, 1], [-48, 48]), {
+    stiffness: 100,
+    damping: 22,
+  });
+  const glowY = useSpring(useTransform(py, [-1, 1], [-42, 42]), {
+    stiffness: 100,
+    damping: 22,
+  });
+
+  function onPointerEnter(event: React.PointerEvent<HTMLDivElement>) {
+    if (reduced) return;
+    pointerRect.current = event.currentTarget.getBoundingClientRect();
+  }
 
   function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
     if (reduced) return;
-    const rect = event.currentTarget.getBoundingClientRect();
+    const rect =
+      pointerRect.current ?? event.currentTarget.getBoundingClientRect();
+    pointerRect.current = rect;
     px.set(((event.clientX - rect.left) / rect.width) * 2 - 1);
     py.set(((event.clientY - rect.top) / rect.height) * 2 - 1);
   }
 
   function onPointerLeave() {
+    pointerRect.current = null;
     px.set(0);
     py.set(0);
   }
@@ -66,9 +102,11 @@ export function LaboratoryHero() {
       <div className="absolute inset-0 field-grid opacity-25" />
       <motion.div
         aria-hidden="true"
-        className="absolute -left-[20%] top-[10%] h-[70vw] w-[70vw] rounded-full bg-blue/8 blur-[120px]"
+        className="absolute -left-[20%] top-[10%] h-[70vw] w-[70vw] rounded-full bg-[radial-gradient(circle,rgba(20,110,245,0.16)_0%,rgba(20,110,245,0.07)_42%,transparent_72%)]"
         animate={
-          reduced || !active ? undefined : { scale: [0.9, 1.1, 0.9], opacity: [0.35, 0.6, 0.35] }
+          reduced || !active
+            ? undefined
+            : { scale: [0.9, 1.1, 0.9], opacity: [0.35, 0.6, 0.35] }
         }
         transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -105,8 +143,8 @@ export function LaboratoryHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.55, ease: easings.easeOut }}
           >
-            Analyses médicales et expertise en hématologie pour transformer un résultat en une
-            prochaine étape claire.
+            Analyses médicales et expertise en hématologie pour transformer un
+            résultat en une prochaine étape claire.
             <span dir="rtl" className="mt-2 block font-medium text-white/86">
               تحاليل طبية وطب أمراض الدم
             </span>
@@ -163,7 +201,12 @@ export function LaboratoryHero() {
 
         <motion.div
           className="relative mx-auto w-full max-w-[540px] lg:col-span-6"
-          style={reduced ? undefined : { y: mediaY, scale: mediaScale, perspective: 1400 }}
+          style={
+            reduced
+              ? undefined
+              : { y: mediaY, scale: mediaScale, perspective: 1400 }
+          }
+          onPointerEnter={onPointerEnter}
           onPointerMove={onPointerMove}
           onPointerLeave={onPointerLeave}
         >
@@ -239,7 +282,11 @@ export function LaboratoryHero() {
                 className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem] border border-white/12 bg-midnight shadow-[0_55px_100px_-36px_rgba(0,0,0,0.8)]"
                 initial={false}
                 animate={{ clipPath: "inset(0)" }}
-                transition={{ duration: 0.9, delay: 0.12, ease: easings.easeInOut }}
+                transition={{
+                  duration: 0.9,
+                  delay: 0.12,
+                  ease: easings.easeInOut,
+                }}
               >
                 <picture className="block h-full w-full">
                   <source
@@ -257,7 +304,11 @@ export function LaboratoryHero() {
                     decoding="async"
                     initial={false}
                     animate={{ scale: 1 }}
-                    transition={{ duration: 1.35, delay: 0.1, ease: easings.easeOut }}
+                    transition={{
+                      duration: 1.35,
+                      delay: 0.1,
+                      ease: easings.easeOut,
+                    }}
                   />
                 </picture>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,17,29,0.03),rgba(3,17,29,0.12)_45%,rgba(3,17,29,0.78)_100%)]" />
@@ -265,14 +316,20 @@ export function LaboratoryHero() {
                   <motion.div
                     aria-hidden="true"
                     className="absolute inset-0 mix-blend-screen"
-                    style={{ background: sheen }}
+                    style={{
+                      x: glowX,
+                      y: glowY,
+                      scale: 1.2,
+                      background:
+                        "radial-gradient(55% 45% at 50% 40%, rgba(115,190,255,0.34), rgba(20,110,245,0.08) 50%, transparent 78%)",
+                    }}
                   />
                 )}
                 {!reduced && active && (
                   <motion.div
                     aria-hidden="true"
-                    className="absolute inset-x-0 h-px bg-[linear-gradient(90deg,transparent,#4ca2ff,transparent)] shadow-[0_0_18px_5px_rgba(20,110,245,0.45)]"
-                    animate={{ top: ["-2%", "102%"], opacity: [0, 0.95, 0] }}
+                    className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,#4ca2ff,transparent)] shadow-[0_0_18px_5px_rgba(20,110,245,0.45)]"
+                    animate={{ y: ["-2svh", "102svh"], opacity: [0, 0.95, 0] }}
                     transition={{
                       duration: 4.6,
                       delay: 1.5,
@@ -292,8 +349,12 @@ export function LaboratoryHero() {
                 </div>
                 <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
                   <div>
-                    <div className="brand-label text-blue">Précision cellulaire</div>
-                    <div className="mt-2 font-display text-3xl">Voir. Comprendre. Orienter.</div>
+                    <div className="brand-label text-blue">
+                      Précision cellulaire
+                    </div>
+                    <div className="mt-2 font-display text-3xl">
+                      Voir. Comprendre. Orienter.
+                    </div>
                   </div>
                   <span className="hidden font-mono text-[0.55rem] tracking-[0.14em] text-white/40 sm:block">
                     40.912° N<br />
@@ -305,7 +366,10 @@ export function LaboratoryHero() {
           </motion.div>
 
           {!reduced && active && (
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+            >
               {orbitDots.map((dot, index) => (
                 <motion.span
                   key={dot.x}

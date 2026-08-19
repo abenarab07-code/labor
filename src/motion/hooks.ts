@@ -3,11 +3,11 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 /**
  * True when the referenced element is intersecting the viewport AND the tab
  * is visible. Use to gate infinite animations so they don't burn CPU offscreen
- * or in a background tab. Starts `true` on the server to avoid layout jank on
- * first paint; the effect corrects it after mount.
+ * or in a background tab. Starts `false` so offscreen sections never launch
+ * a frame of animation before IntersectionObserver reports their state.
  */
 export function useSectionActive(ref: RefObject<Element | null>) {
-  const [active, setActive] = useState(true);
+  const [active, setActive] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -35,7 +35,6 @@ export function useSectionActive(ref: RefObject<Element | null>) {
   }, [ref]);
   return active;
 }
-
 
 export function useReducedMotionMode() {
   const [reduced, setReduced] = useState(false);

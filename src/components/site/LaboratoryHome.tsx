@@ -1,10 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-} from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   ArrowDown,
   ArrowRight,
@@ -21,7 +17,7 @@ import {
 } from "lucide-react";
 import { clinic } from "@/content/clinic";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { useLowPowerMode } from "@/motion/hooks";
+import { useLowPowerMode, useSectionActive } from "@/motion/hooks";
 import heroDiagnostic from "@/assets/brand/hero-diagnostic.webp";
 import labAnalysis from "@/assets/brand/lab-analysis.webp";
 import labAnalysisAvif from "@/assets/brand/lab-analysis.avif";
@@ -38,7 +34,12 @@ const specialties = [
     title: "Analyses médicales",
     description:
       "Prélèvements et examens prescrits, organisés avec des consignes claires avant votre venue.",
-    points: ["Analyses sanguines", "Bactériologie", "Sérologie", "Dosages hormonaux"],
+    points: [
+      "Analyses sanguines",
+      "Bactériologie",
+      "Sérologie",
+      "Dosages hormonaux",
+    ],
     icon: FlaskConical,
     image: labAnalysis,
     avif: labAnalysisAvif,
@@ -62,7 +63,11 @@ const specialties = [
     title: "Consultation en hématologie",
     description:
       "Un temps médical pour reprendre votre histoire, vos résultats et déterminer la prochaine étape adaptée.",
-    points: ["Analyse du dossier", "Interprétation clinique", "Orientation du bilan"],
+    points: [
+      "Analyse du dossier",
+      "Interprétation clinique",
+      "Orientation du bilan",
+    ],
     icon: Stethoscope,
     image: doctorPoster,
     avif: doctorPosterAvif,
@@ -134,8 +139,8 @@ function Reveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 42, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 42 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12% 0px -8% 0px" }}
       transition={{ duration: 0.9, delay, ease: easeOut }}
     >
@@ -151,6 +156,12 @@ export function LaboratoryHome() {
   const reducedMotion = Boolean(prefersReducedMotion || lowPower);
   const [activeSpecialty, setActiveSpecialty] = useState(0);
   const specialty = specialties[activeSpecialty];
+  const hematologyRef = useRef<HTMLElement>(null);
+  const doctorRef = useRef<HTMLElement>(null);
+  const contactRef = useRef<HTMLElement>(null);
+  const hematologyActive = useSectionActive(hematologyRef);
+  const doctorActive = useSectionActive(doctorRef);
+  const contactActive = useSectionActive(contactRef);
   const heroRef = { current: null as HTMLElement | null };
   const progress = 1;
   const heroImageY = "0%";
@@ -178,7 +189,11 @@ export function LaboratoryHome() {
               src={heroDiagnostic}
               alt="Visualisation scientifique d'une cellule sanguine dans un champ diagnostique"
               className="absolute -inset-y-[12%] inset-x-0 h-[124%] w-full object-cover object-[62%_center] opacity-75 will-change-transform"
-              style={reducedMotion ? undefined : { y: heroImageY, scale: heroImageScale }}
+              style={
+                reducedMotion
+                  ? undefined
+                  : { y: heroImageY, scale: heroImageScale }
+              }
               width={1672}
               height={941}
               fetchPriority="high"
@@ -195,8 +210,14 @@ export function LaboratoryHome() {
             >
               <motion.div
                 className="absolute inset-x-0 h-px bg-[linear-gradient(90deg,transparent,rgba(88,177,255,0.9),transparent)] shadow-[0_0_35px_8px_rgba(20,110,245,0.22)]"
-                animate={reducedMotion ? undefined : { top: ["12%", "88%", "12%"] }}
-                transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={
+                  reducedMotion ? undefined : { top: ["12%", "88%", "12%"] }
+                }
+                transition={{
+                  duration: 7.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               />
               <div className="absolute right-4 top-[18%] font-mono text-[0.55rem] tracking-[0.2em] text-blue/70">
                 CELLULAR FIELD / 04
@@ -223,7 +244,12 @@ export function LaboratoryHome() {
                 <motion.span
                   key={`${cell.left}-${cell.top}`}
                   className="absolute rounded-full border border-coral/35 bg-coral/10 shadow-[inset_0_0_8px_rgba(239,93,88,0.18),0_0_18px_rgba(239,93,88,0.12)]"
-                  style={{ left: cell.left, top: cell.top, width: cell.size, height: cell.size }}
+                  style={{
+                    left: cell.left,
+                    top: cell.top,
+                    width: cell.size,
+                    height: cell.size,
+                  }}
                   initial={{ opacity: 0, scale: 0.3 }}
                   animate={
                     reducedMotion
@@ -262,7 +288,11 @@ export function LaboratoryHome() {
 
             <motion.div
               className="container-editorial relative z-10 flex min-h-[calc(100svh-7rem)] flex-col justify-between pb-8"
-              style={reducedMotion ? undefined : { y: heroContentY, opacity: heroContentOpacity }}
+              style={
+                reducedMotion
+                  ? undefined
+                  : { y: heroContentY, opacity: heroContentOpacity }
+              }
             >
               <div className="max-w-4xl pt-[7vh] md:pt-[9vh]">
                 <motion.div
@@ -271,7 +301,9 @@ export function LaboratoryHome() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, delay: 0.1 }}
                 >
-                  <span className="brand-label text-blue">El Bouni · Annaba</span>
+                  <span className="brand-label text-blue">
+                    El Bouni · Annaba
+                  </span>
                   <span className="h-px w-10 bg-white/20" />
                   <span className="text-xs text-plasma/58">
                     Laboratoire & consultation spécialisée
@@ -283,7 +315,11 @@ export function LaboratoryHome() {
                     className="block"
                     initial={{ opacity: 0, y: 35 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.75, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{
+                      duration: 0.75,
+                      delay: 0.16,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                   >
                     Votre sang
                   </motion.span>
@@ -291,7 +327,11 @@ export function LaboratoryHome() {
                     className="block font-display italic text-blue"
                     initial={{ opacity: 0, y: 35 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.75, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{
+                      duration: 0.75,
+                      delay: 0.24,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                   >
                     raconte.
                   </motion.span>
@@ -299,7 +339,11 @@ export function LaboratoryHome() {
                     className="block text-[0.54em] leading-[1.02] tracking-[-0.035em]"
                     initial={{ opacity: 0, y: 28 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.75, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{
+                      duration: 0.75,
+                      delay: 0.32,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                   >
                     Nous savons le lire.
                   </motion.span>
@@ -312,9 +356,12 @@ export function LaboratoryHome() {
                   transition={{ duration: 0.6, delay: 0.5 }}
                 >
                   <p className="max-w-xl text-base leading-7 text-plasma/74 md:text-lg">
-                    Analyses médicales, prélèvements et expertise en hématologie — pour passer d'un
-                    résultat à une prochaine étape claire.
-                    <span dir="rtl" className="mt-2 block font-medium text-white/88">
+                    Analyses médicales, prélèvements et expertise en hématologie
+                    — pour passer d'un résultat à une prochaine étape claire.
+                    <span
+                      dir="rtl"
+                      className="mt-2 block font-medium text-white/88"
+                    >
                       تحاليل طبية وطب أمراض الدم
                     </span>
                   </p>
@@ -325,7 +372,11 @@ export function LaboratoryHome() {
                   >
                     <motion.span
                       animate={reducedMotion ? undefined : { y: [0, 6, 0] }}
-                      transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                      transition={{
+                        duration: 1.8,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
                     >
                       <ArrowDown className="h-5 w-5 transition-transform group-hover:translate-y-1" />
                     </motion.span>
@@ -366,7 +417,11 @@ export function LaboratoryHome() {
                     className={`flex items-center gap-4 py-4 ${index > 0 ? "md:border-l md:border-white/12 md:pl-6" : ""}`}
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.72 + index * 0.09, duration: 0.55, ease: easeOut }}
+                    transition={{
+                      delay: 0.72 + index * 0.09,
+                      duration: 0.55,
+                      ease: easeOut,
+                    }}
                   >
                     <span className="text-[0.62rem] font-semibold tracking-[0.16em] text-coral">
                       {number}
@@ -380,19 +435,26 @@ export function LaboratoryHome() {
             </motion.div>
           </section>
 
-          <section id="analyses" className="scroll-mt-24 bg-plasma py-24 md:py-36">
+          <section
+            id="analyses"
+            className="scroll-mt-24 bg-plasma py-24 md:py-36"
+          >
             <div className="container-editorial">
               <div className="grid items-end gap-10 lg:grid-cols-12">
                 <Reveal className="lg:col-span-7">
-                  <div className="brand-label text-blue">Le bon niveau de lecture</div>
+                  <div className="brand-label text-blue">
+                    Le bon niveau de lecture
+                  </div>
                   <h2 className="mt-5 max-w-[13ch] font-display text-[clamp(3rem,7vw,6.8rem)] leading-[0.9] tracking-[-0.045em] text-midnight">
-                    Une analyse ne se résume pas à <em className="text-blue">un chiffre.</em>
+                    Une analyse ne se résume pas à{" "}
+                    <em className="text-blue">un chiffre.</em>
                   </h2>
                 </Reveal>
                 <Reveal className="lg:col-span-4 lg:col-start-9" delay={0.12}>
                   <p className="text-base leading-7 text-slate md:text-lg">
-                    Le laboratoire accompagne le prélèvement, l'examen et — lorsqu'il le faut — une
-                    interprétation spécialisée en hématologie.
+                    Le laboratoire accompagne le prélèvement, l'examen et —
+                    lorsqu'il le faut — une interprétation spécialisée en
+                    hématologie.
                   </p>
                 </Reveal>
               </div>
@@ -420,7 +482,11 @@ export function LaboratoryHome() {
                           <motion.span
                             layoutId="specialty-active"
                             className="absolute inset-y-0 left-0 w-[3px] bg-coral"
-                            transition={{ type: "spring", stiffness: 350, damping: 34 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 350,
+                              damping: 34,
+                            }}
                           />
                         )}
                         <span
@@ -481,9 +547,15 @@ export function LaboratoryHome() {
                         <motion.div
                           initial={{ opacity: 0, y: 18 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.18, duration: 0.55, ease: easeOut }}
+                          transition={{
+                            delay: 0.18,
+                            duration: 0.55,
+                            ease: easeOut,
+                          }}
                         >
-                          <div className="brand-label text-blue">{specialty.kicker}</div>
+                          <div className="brand-label text-blue">
+                            {specialty.kicker}
+                          </div>
                           <h3 className="mt-4 font-display text-5xl leading-[0.94] text-white md:text-6xl">
                             {specialty.title}
                           </h3>
@@ -516,6 +588,7 @@ export function LaboratoryHome() {
 
       <section
         id="hematologie"
+        ref={hematologyRef}
         className="relative overflow-hidden bg-midnight py-24 text-plasma md:py-36"
       >
         <picture className="absolute inset-0 block">
@@ -526,8 +599,8 @@ export function LaboratoryHome() {
             className="h-full w-full object-cover opacity-[0.18] mix-blend-screen"
             loading="lazy"
             decoding="async"
-            initial={{ scale: 1.08 }}
-            whileInView={{ scale: 1 }}
+            initial={reducedMotion ? false : { scale: 1.08 }}
+            whileInView={reducedMotion ? undefined : { scale: 1 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 1.8, ease: easeOut }}
           />
@@ -536,7 +609,11 @@ export function LaboratoryHome() {
         <motion.div
           aria-hidden="true"
           className="absolute right-[7%] top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full border border-blue/20"
-          animate={reducedMotion ? undefined : { rotate: 360, scale: [0.96, 1.04, 0.96] }}
+          animate={
+            reducedMotion || !hematologyActive
+              ? undefined
+              : { rotate: 360, scale: [0.96, 1.04, 0.96] }
+          }
           transition={{
             rotate: { duration: 42, repeat: Infinity, ease: "linear" },
             scale: { duration: 7, repeat: Infinity },
@@ -547,15 +624,18 @@ export function LaboratoryHome() {
         </motion.div>
         <div className="container-editorial relative grid gap-16 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-6">
-            <div className="brand-label text-coral">Hématologie spécialisée</div>
+            <div className="brand-label text-coral">
+              Hématologie spécialisée
+            </div>
             <h2 className="mt-5 max-w-[10ch] font-display text-[clamp(3.1rem,7vw,7rem)] leading-[0.89] tracking-[-0.045em] text-white">
               Voir ce que le bilan seul ne montre pas.
             </h2>
           </Reveal>
           <Reveal className="lg:col-span-5 lg:col-start-8" delay={0.14}>
             <p className="text-lg leading-8 text-plasma/74">
-              Le frottis sanguin et la cytologie médullaire observent les cellules elles-mêmes.
-              Cette lecture spécialisée complète les chiffres quand le contexte médical l'exige.
+              Le frottis sanguin et la cytologie médullaire observent les
+              cellules elles-mêmes. Cette lecture spécialisée complète les
+              chiffres quand le contexte médical l'exige.
             </p>
             <div className="mt-9 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2">
               {[
@@ -564,11 +644,16 @@ export function LaboratoryHome() {
                 "Consultation spécialisée",
                 "Orientation du bilan",
               ].map((label, index) => (
-                <div key={label} className="flex items-start gap-3 bg-midnight/86 p-5">
+                <div
+                  key={label}
+                  className="flex items-start gap-3 bg-midnight/86 p-5"
+                >
                   <span className="mt-0.5 text-[0.6rem] font-bold tracking-[0.13em] text-coral">
                     0{index + 1}
                   </span>
-                  <span className="text-sm font-medium text-white/82">{label}</span>
+                  <span className="text-sm font-medium text-white/82">
+                    {label}
+                  </span>
                 </div>
               ))}
             </div>
@@ -589,7 +674,8 @@ export function LaboratoryHome() {
             <Reveal className="lg:col-span-4">
               <div className="brand-label text-blue">Avant de venir</div>
               <h2 className="mt-5 font-display text-5xl leading-[0.92] text-midnight md:text-7xl">
-                Un parcours qui commence <em className="text-blue">avant le prélèvement.</em>
+                Un parcours qui commence{" "}
+                <em className="text-blue">avant le prélèvement.</em>
               </h2>
               <a
                 href={buildWhatsAppUrl("prelevement")}
@@ -607,7 +693,11 @@ export function LaboratoryHome() {
                   initial={{ opacity: 0, x: 48 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-8%" }}
-                  transition={{ duration: 0.72, delay: index * 0.07, ease: easeOut }}
+                  transition={{
+                    duration: 0.72,
+                    delay: index * 0.07,
+                    ease: easeOut,
+                  }}
                 >
                   <motion.span
                     aria-hidden="true"
@@ -615,7 +705,11 @@ export function LaboratoryHome() {
                     initial={{ width: "0%" }}
                     whileInView={{ width: "100%" }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.9, delay: 0.16 + index * 0.06, ease: easeOut }}
+                    transition={{
+                      duration: 0.9,
+                      delay: 0.16 + index * 0.06,
+                      ease: easeOut,
+                    }}
                   />
                   <span className="text-[0.68rem] font-bold tracking-[0.16em] text-coral">
                     {step.number}
@@ -623,19 +717,26 @@ export function LaboratoryHome() {
                   <h3 className="font-display text-3xl leading-none text-midnight transition-colors group-hover:text-blue">
                     {step.title}
                   </h3>
-                  <p className="text-sm leading-6 text-slate md:pr-4">{step.copy}</p>
+                  <p className="text-sm leading-6 text-slate md:pr-4">
+                    {step.copy}
+                  </p>
                   {index === journey.length - 1 && <div className="hidden" />}
                 </motion.div>
               ))}
               <div className="border-t border-midnight/12 pt-6 text-xs leading-5 text-slate">
-                Une urgence vitale ne passe pas par ce parcours: contactez les services d'urgence.
+                Une urgence vitale ne passe pas par ce parcours: contactez les
+                services d'urgence.
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="docteur" className="scroll-mt-24 overflow-hidden bg-plasma py-24 md:py-36">
+      <section
+        id="docteur"
+        ref={doctorRef}
+        className="scroll-mt-24 overflow-hidden bg-plasma py-24 md:py-36"
+      >
         <div className="container-editorial grid gap-14 lg:grid-cols-12 lg:items-center">
           <motion.div
             className="relative lg:col-span-5"
@@ -646,7 +747,9 @@ export function LaboratoryHome() {
           >
             <motion.div
               className="relative mx-auto max-w-[420px] overflow-hidden rounded-[2rem] bg-midnight shadow-[0_40px_100px_-45px_rgba(7,26,43,0.55)]"
-              whileHover={reducedMotion ? undefined : { y: -8, rotate: 0.6, scale: 1.01 }}
+              whileHover={
+                reducedMotion ? undefined : { y: -8, rotate: 0.6, scale: 1.01 }
+              }
               transition={{ type: "spring", stiffness: 190, damping: 20 }}
             >
               <video
@@ -657,11 +760,18 @@ export function LaboratoryHome() {
                 className="aspect-[9/16] w-full object-cover"
                 aria-label="Présentation vidéo du concept par Dr Tarfaya"
               >
-                <source src="/media/dr-tarfaya-concept-optimized.mp4" type="video/mp4" />
+                <source
+                  src="/media/dr-tarfaya-concept-optimized.mp4"
+                  type="video/mp4"
+                />
               </video>
               <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 rounded-full bg-midnight/75 px-3 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur">
                 <motion.span
-                  animate={reducedMotion ? undefined : { scale: [1, 1.35, 1] }}
+                  animate={
+                    reducedMotion || !doctorActive
+                      ? undefined
+                      : { scale: [1, 1.35, 1] }
+                  }
                   transition={{ duration: 2, repeat: Infinity }}
                 >
                   <Play className="h-3 w-3 fill-current text-coral" />
@@ -672,7 +782,9 @@ export function LaboratoryHome() {
             <motion.div
               aria-hidden="true"
               className="absolute -bottom-12 -left-10 h-36 w-36 rounded-full border border-blue/30 md:h-52 md:w-52"
-              animate={reducedMotion ? undefined : { rotate: 360 }}
+              animate={
+                reducedMotion || !doctorActive ? undefined : { rotate: 360 }
+              }
               transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
             />
           </motion.div>
@@ -680,17 +792,21 @@ export function LaboratoryHome() {
           <Reveal className="lg:col-span-6 lg:col-start-7" delay={0.1}>
             <div className="brand-label text-blue">Dr Tarfaya Radya</div>
             <h2 className="mt-5 font-display text-[clamp(3.2rem,6.5vw,6.6rem)] leading-[0.89] tracking-[-0.045em] text-midnight">
-              Le laboratoire observe. <em className="text-blue">Le médecin relie.</em>
+              Le laboratoire observe.{" "}
+              <em className="text-blue">Le médecin relie.</em>
             </h2>
             <p className="mt-7 max-w-xl text-lg leading-8 text-slate">
-              Médecin spécialiste en hématologie, Dr Tarfaya place l'explication au cœur du
-              parcours: comprendre le système sanguin, le rôle de l'examen et ce que le résultat
-              change pour la suite.
+              Médecin spécialiste en hématologie, Dr Tarfaya place l'explication
+              au cœur du parcours: comprendre le système sanguin, le rôle de
+              l'examen et ce que le résultat change pour la suite.
             </p>
             <div className="mt-9 border-l-2 border-coral pl-6">
-              <span className="brand-label text-coral">Le principe de la marque</span>
+              <span className="brand-label text-coral">
+                Le principe de la marque
+              </span>
               <p className="mt-2 font-display text-3xl leading-tight text-midnight">
-                Le patient ne reste pas seul face à un résultat qu'il ne comprend pas.
+                Le patient ne reste pas seul face à un résultat qu'il ne
+                comprend pas.
               </p>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -728,7 +844,11 @@ export function LaboratoryHome() {
                 initial={{ opacity: 0, x: 28 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-5%" }}
-                transition={{ duration: 0.65, delay: index * 0.06, ease: easeOut }}
+                transition={{
+                  duration: 0.65,
+                  delay: index * 0.06,
+                  ease: easeOut,
+                }}
               >
                 <summary className="flex cursor-pointer list-none items-start justify-between gap-5 font-display text-2xl text-midnight marker:content-none">
                   {item.q}
@@ -736,7 +856,9 @@ export function LaboratoryHome() {
                     +
                   </span>
                 </summary>
-                <p className="max-w-xl pt-4 text-sm leading-6 text-slate">{item.a}</p>
+                <p className="max-w-xl pt-4 text-sm leading-6 text-slate">
+                  {item.a}
+                </p>
               </motion.details>
             ))}
           </div>
@@ -745,12 +867,17 @@ export function LaboratoryHome() {
 
       <section
         id="contact"
+        ref={contactRef}
         className="relative scroll-mt-24 overflow-hidden bg-blue py-20 text-white md:py-28"
       >
         <motion.div
           aria-hidden="true"
           className="absolute -right-36 -top-40 h-[38rem] w-[38rem] rounded-full border border-white/15"
-          animate={reducedMotion ? undefined : { rotate: 360, scale: [1, 1.05, 1] }}
+          animate={
+            reducedMotion || !contactActive
+              ? undefined
+              : { rotate: 360, scale: [1, 1.05, 1] }
+          }
           transition={{
             rotate: { duration: 52, repeat: Infinity, ease: "linear" },
             scale: { duration: 8, repeat: Infinity },
@@ -763,15 +890,17 @@ export function LaboratoryHome() {
         <div className="container-editorial relative">
           <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
             <Reveal className="lg:col-span-7">
-              <div className="brand-label text-white/65">La prochaine étape</div>
+              <div className="brand-label text-white/65">
+                La prochaine étape
+              </div>
               <h2 className="mt-5 max-w-[11ch] font-display text-[clamp(3.2rem,7vw,7rem)] leading-[0.88] tracking-[-0.05em] text-white">
                 Dites-nous ce que votre ordonnance demande.
               </h2>
             </Reveal>
             <Reveal className="lg:col-span-4 lg:col-start-9" delay={0.12}>
               <p className="text-base leading-7 text-white/72">
-                Avant de vous déplacer, confirmez l'analyse, la préparation et la disponibilité du
-                service.
+                Avant de vous déplacer, confirmez l'analyse, la préparation et
+                la disponibilité du service.
               </p>
               <div className="mt-7 grid gap-3">
                 <a
@@ -814,7 +943,9 @@ export function LaboratoryHome() {
               <MapPin className="mt-0.5 h-5 w-5 shrink-0" />
               <span>
                 <strong className="block">El Bouni, Annaba</strong>
-                <span className="mt-1 block text-sm text-white/65">{clinic.address.line1}</span>
+                <span className="mt-1 block text-sm text-white/65">
+                  {clinic.address.line1}
+                </span>
               </span>
             </a>
             <div className="flex gap-4 bg-blue p-6">

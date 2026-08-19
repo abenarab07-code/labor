@@ -1,17 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 import { SiteShell } from "@/components/site/SiteShell";
 import { AppointmentFunnel } from "@/components/site/AppointmentFunnel";
 import { Reveal } from "@/components/site/motion-primitives";
 import { clinic } from "@/content/clinic";
 import { Phone, MessageCircle } from "lucide-react";
 
-const searchSchema = z.object({
-  soin: z.string().optional(),
-});
-
 export const Route = createFileRoute("/rendez-vous")({
-  validateSearch: (s) => searchSchema.parse(s),
+  validateSearch: (search: Record<string, unknown>): { soin?: string } =>
+    typeof search.soin === "string" ? { soin: search.soin } : {},
   head: () => ({
     meta: [
       { title: "Demander un rendez-vous — Laboratoire Dr Tarfaya" },

@@ -9,11 +9,13 @@ export function LazyInView({
   children,
   minHeight,
   rootMargin = "600px 0px",
+  idleAfterMs,
   fallback = null,
 }: {
   children: ReactNode;
   minHeight: number | string;
   rootMargin?: string;
+  idleAfterMs?: number;
   fallback?: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -23,9 +25,13 @@ export function LazyInView({
     if (inView) return;
     const el = ref.current;
     if (!el) return;
+    const idleTimer =
+      idleAfterMs == null ? undefined : window.setTimeout(() => setInView(true), idleAfterMs);
     if (typeof IntersectionObserver === "undefined") {
       setInView(true);
-      return;
+      return () => {
+        if (idleTimer != null) window.clearTimeout(idleTimer);
+      };
     }
     const io = new IntersectionObserver(
       (entries) => {
@@ -40,8 +46,11 @@ export function LazyInView({
       { rootMargin, threshold: 0 },
     );
     io.observe(el);
-    return () => io.disconnect();
-  }, [inView, rootMargin]);
+    return () => {
+      io.disconnect();
+      if (idleTimer != null) window.clearTimeout(idleTimer);
+    };
+  }, [idleAfterMs, inView, rootMargin]);
 
   return (
     <div ref={ref} style={inView ? undefined : { minHeight }}>

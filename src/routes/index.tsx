@@ -2,13 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { lazy } from "react";
 import { SiteShell } from "@/components/site/SiteShell";
 import { LaboratoryHero } from "@/components/site/LaboratoryHero";
-import { LaboratoryAnalysisStage } from "@/components/site/LaboratoryAnalysisStage";
 import { LaboratoryPageProgress } from "@/components/site/LaboratoryPageProgress";
 import { LazyInView } from "@/components/site/LazyInView";
+import heroDiagnostic640 from "@/assets/brand/hero-diagnostic-640.avif";
+import heroDiagnostic1080 from "@/assets/brand/hero-diagnostic-1080.avif";
 
 const LaboratoryAfterFold = lazy(() =>
   import("@/components/site/LaboratoryHome").then((module) => ({
     default: module.LaboratoryHome,
+  })),
+);
+
+const LaboratoryAnalysisStage = lazy(() =>
+  import("@/components/site/LaboratoryAnalysisStage").then((module) => ({
+    default: module.LaboratoryAnalysisStage,
   })),
 );
 
@@ -32,7 +39,23 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:url", content: "/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "/" },
+      {
+        rel: "preload",
+        as: "image",
+        type: "image/avif",
+        href: heroDiagnostic640,
+        media: "(max-width: 767px)",
+      },
+      {
+        rel: "preload",
+        as: "image",
+        type: "image/avif",
+        href: heroDiagnostic1080,
+        media: "(min-width: 768px)",
+      },
+    ],
   }),
   component: Home,
 });
@@ -42,7 +65,9 @@ function Home() {
     <SiteShell>
       <LaboratoryPageProgress />
       <LaboratoryHero />
-      <LaboratoryAnalysisStage />
+      <LazyInView minHeight={1800} rootMargin="-1px 0px" idleAfterMs={1200}>
+        <LaboratoryAnalysisStage />
+      </LazyInView>
       <LazyInView minHeight={3600} rootMargin="900px 0px">
         <LaboratoryAfterFold />
       </LazyInView>

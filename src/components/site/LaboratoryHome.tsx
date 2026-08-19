@@ -24,8 +24,11 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { useLowPowerMode } from "@/motion/hooks";
 import heroDiagnostic from "@/assets/brand/hero-diagnostic.webp";
 import labAnalysis from "@/assets/brand/lab-analysis.webp";
+import labAnalysisAvif from "@/assets/brand/lab-analysis.avif";
 import bloodSmear from "@/assets/brand/blood-smear.webp";
+import bloodSmearAvif from "@/assets/brand/blood-smear.avif";
 import doctorPoster from "@/assets/brand/dr-tarfaya-poster-clean.webp";
+import doctorPosterAvif from "@/assets/brand/dr-tarfaya-poster-clean.avif";
 
 const specialties = [
   {
@@ -38,6 +41,7 @@ const specialties = [
     points: ["Analyses sanguines", "Bactériologie", "Sérologie", "Dosages hormonaux"],
     icon: FlaskConical,
     image: labAnalysis,
+    avif: labAnalysisAvif,
   },
   {
     id: "hematologie",
@@ -49,6 +53,7 @@ const specialties = [
     points: ["Frottis sanguin", "Cytologie médullaire", "Lecture spécialisée"],
     icon: Microscope,
     image: bloodSmear,
+    avif: bloodSmearAvif,
   },
   {
     id: "consultation",
@@ -60,6 +65,7 @@ const specialties = [
     points: ["Analyse du dossier", "Interprétation clinique", "Orientation du bilan"],
     icon: Stethoscope,
     image: doctorPoster,
+    avif: doctorPosterAvif,
   },
 ] as const;
 
@@ -450,14 +456,19 @@ export function LaboratoryHome() {
                       exit={{ opacity: 0, clipPath: "inset(0 12% 0 0)" }}
                       transition={{ duration: 0.58, ease: easeOut }}
                     >
-                      <motion.img
-                        src={specialty.image}
-                        alt=""
-                        className={`absolute inset-0 h-full w-full object-cover ${specialty.id === "consultation" ? "object-[50%_25%]" : ""}`}
-                        initial={{ scale: 1.09 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 1.25, ease: easeOut }}
-                      />
+                      <picture className="absolute inset-0 block">
+                        <source srcSet={specialty.avif} type="image/avif" />
+                        <motion.img
+                          src={specialty.image}
+                          alt=""
+                          className={`h-full w-full object-cover ${specialty.id === "consultation" ? "object-[50%_25%]" : ""}`}
+                          loading="lazy"
+                          decoding="async"
+                          initial={{ scale: 1.09 }}
+                          animate={{ scale: 1 }}
+                          transition={{ duration: 1.25, ease: easeOut }}
+                        />
+                      </picture>
                       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,17,29,0.93)_0%,rgba(3,17,29,0.76)_42%,rgba(3,17,29,0.12)_100%)]" />
                       <motion.div
                         aria-hidden="true"
@@ -507,15 +518,20 @@ export function LaboratoryHome() {
         id="hematologie"
         className="relative overflow-hidden bg-midnight py-24 text-plasma md:py-36"
       >
-        <motion.img
-          src={bloodSmear}
-          alt="Champ microscopique de cellules sanguines"
-          className="absolute inset-0 h-full w-full object-cover opacity-[0.18] mix-blend-screen"
-          initial={{ scale: 1.08 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 1.8, ease: easeOut }}
-        />
+        <picture className="absolute inset-0 block">
+          <source srcSet={bloodSmearAvif} type="image/avif" />
+          <motion.img
+            src={bloodSmear}
+            alt="Champ microscopique de cellules sanguines"
+            className="h-full w-full object-cover opacity-[0.18] mix-blend-screen"
+            loading="lazy"
+            decoding="async"
+            initial={{ scale: 1.08 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 1.8, ease: easeOut }}
+          />
+        </picture>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_38%,rgba(20,110,245,0.24),transparent_32%),linear-gradient(90deg,#071A2B_0%,rgba(7,26,43,0.88)_62%,rgba(7,26,43,0.7)_100%)]" />
         <motion.div
           aria-hidden="true"

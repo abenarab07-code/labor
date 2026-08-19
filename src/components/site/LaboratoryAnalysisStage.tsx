@@ -12,8 +12,11 @@ import { Link } from "@tanstack/react-router";
 import { easings } from "@/motion/motion-tokens";
 import { useLowPowerMode, useReducedMotionMode, useSectionActive } from "@/motion/hooks";
 import labAnalysis from "@/assets/brand/lab-analysis.webp";
+import labAnalysisAvif from "@/assets/brand/lab-analysis.avif";
 import bloodSmear from "@/assets/brand/blood-smear.webp";
+import bloodSmearAvif from "@/assets/brand/blood-smear.avif";
 import doctorPoster from "@/assets/brand/dr-tarfaya-poster-clean.webp";
+import doctorPosterAvif from "@/assets/brand/dr-tarfaya-poster-clean.avif";
 
 const analyses = [
   {
@@ -23,6 +26,7 @@ const analyses = [
     text: "Le prélèvement, l'examen et les consignes s'organisent avec clarté — avant même votre arrivée.",
     points: ["Biochimie", "Bactériologie", "Sérologie", "Hormones"],
     image: labAnalysis,
+    avif: labAnalysisAvif,
     icon: FlaskConical,
     position: "object-center",
   },
@@ -33,6 +37,7 @@ const analyses = [
     text: "Quand le bilan ne suffit pas, l'observation des cellules apporte un autre niveau de lecture médicale.",
     points: ["Frottis sanguin", "Cytologie médullaire", "Lecture spécialisée"],
     image: bloodSmear,
+    avif: bloodSmearAvif,
     icon: Microscope,
     position: "object-center",
   },
@@ -43,6 +48,7 @@ const analyses = [
     text: "Votre histoire, vos symptômes et vos résultats sont repris ensemble pour orienter la prochaine étape.",
     points: ["Analyse du dossier", "Interprétation clinique", "Orientation du bilan"],
     image: doctorPoster,
+    avif: doctorPosterAvif,
     icon: Stethoscope,
     position: "object-[50%_25%]",
   },
@@ -93,17 +99,20 @@ export function LaboratoryAnalysisStage() {
                 viewport={{ once: true, margin: "-10%" }}
                 transition={{ duration: 0.8, delay: index * 0.06, ease: easings.easeOut }}
               >
-                <motion.img
-                  src={item.image}
-                  alt=""
-                  className={`absolute inset-0 h-full w-full object-cover ${item.position}`}
-                  loading="lazy"
-                  decoding="async"
-                  initial={{ scale: 1.08 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.4, ease: easings.easeOut }}
-                />
+                <picture className="absolute inset-0 block">
+                  <source srcSet={item.avif} type="image/avif" />
+                  <motion.img
+                    src={item.image}
+                    alt=""
+                    className={`h-full w-full object-cover ${item.position}`}
+                    loading="lazy"
+                    decoding="async"
+                    initial={{ scale: 1.08 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.4, ease: easings.easeOut }}
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,17,29,0.08),rgba(3,17,29,0.28)_35%,rgba(3,17,29,0.96)_100%)]" />
                 <div className="absolute left-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/16 bg-midnight/45 backdrop-blur">
                   <Icon className="h-4 w-4 text-blue" />
@@ -148,17 +157,20 @@ export function LaboratoryAnalysisStage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6, ease: easings.easeInOut }}
             >
-              <motion.img
-                src={current.image}
-                alt=""
-                className={`absolute inset-y-0 right-0 h-full w-[56%] object-cover ${current.position}`}
-                loading="lazy"
-                decoding="async"
-                initial={{ scale: 1.1, clipPath: "inset(0 0 0 16%)" }}
-                animate={{ scale: 1, clipPath: "inset(0 0 0 0%)" }}
-                exit={{ scale: 1.04, clipPath: "inset(0 12% 0 0)" }}
-                transition={{ duration: 0.9, ease: easings.easeInOut }}
-              />
+              <picture className="absolute inset-y-0 right-0 block h-full w-[56%]">
+                <source srcSet={current.avif} type="image/avif" />
+                <motion.img
+                  src={current.image}
+                  alt=""
+                  className={`h-full w-full object-cover ${current.position}`}
+                  loading="lazy"
+                  decoding="async"
+                  initial={{ scale: 1.1, clipPath: "inset(0 0 0 16%)" }}
+                  animate={{ scale: 1, clipPath: "inset(0 0 0 0%)" }}
+                  exit={{ scale: 1.04, clipPath: "inset(0 12% 0 0)" }}
+                  transition={{ duration: 0.9, ease: easings.easeInOut }}
+                />
+              </picture>
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,#f7f4ee_0%,#f7f4ee_42%,rgba(247,244,238,0.93)_53%,rgba(247,244,238,0.05)_82%)]" />

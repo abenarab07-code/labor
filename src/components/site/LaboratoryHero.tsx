@@ -14,6 +14,8 @@ import { useLowPowerMode, useReducedMotionMode, useSectionActive } from "@/motio
 import { clinic } from "@/content/clinic";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import heroDiagnostic from "@/assets/brand/hero-diagnostic.webp";
+import heroDiagnostic640 from "@/assets/brand/hero-diagnostic-640.avif";
+import heroDiagnostic1080 from "@/assets/brand/hero-diagnostic-1080.avif";
 
 const orbitDots = [
   { x: "-5%", y: "20%", size: 8, color: "#EF5D58", duration: 8 },
@@ -239,18 +241,25 @@ export function LaboratoryHero() {
                 animate={{ clipPath: "inset(0)" }}
                 transition={{ duration: 0.9, delay: 0.12, ease: easings.easeInOut }}
               >
-                <motion.img
-                  src={heroDiagnostic}
-                  alt="Cellule sanguine observée dans un champ diagnostique"
-                  className="h-full w-full object-cover"
-                  width={1672}
-                  height={941}
-                  fetchPriority="high"
-                  decoding="async"
-                  initial={false}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 1.35, delay: 0.1, ease: easings.easeOut }}
-                />
+                <picture className="block h-full w-full">
+                  <source
+                    type="image/avif"
+                    srcSet={`${heroDiagnostic640} 640w, ${heroDiagnostic1080} 1080w`}
+                    sizes="(min-width: 1024px) 540px, calc(100vw - 40px)"
+                  />
+                  <motion.img
+                    src={heroDiagnostic}
+                    alt="Cellule sanguine observée dans un champ diagnostique"
+                    className="h-full w-full object-cover"
+                    width={1672}
+                    height={941}
+                    fetchPriority="high"
+                    decoding="async"
+                    initial={false}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 1.35, delay: 0.1, ease: easings.easeOut }}
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,17,29,0.03),rgba(3,17,29,0.12)_45%,rgba(3,17,29,0.78)_100%)]" />
                 {!reduced && active && (
                   <motion.div

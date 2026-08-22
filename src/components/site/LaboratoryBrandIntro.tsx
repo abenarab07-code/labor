@@ -103,7 +103,7 @@ export function LaboratoryBrandIntro() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 1.24 }}
             >
-              Laboratoire · Hématologie
+              Analyses médicales · Biochimie
             </motion.div>
             <motion.span
               className="mt-3 h-px w-24 origin-left bg-[linear-gradient(90deg,#146ef5,#ef5d58)]"

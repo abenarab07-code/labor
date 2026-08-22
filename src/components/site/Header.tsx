@@ -59,12 +59,12 @@ export function Header() {
         className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${
           scrolled
             ? "border-midnight/8 bg-plasma/88 shadow-[0_8px_30px_rgba(7,26,43,0.06)] backdrop-blur-xl"
-            : "border-white/10 bg-midnight/32 backdrop-blur-sm"
+            : "border-midnight/8 bg-[#f4f8fc]/88 backdrop-blur-sm"
         }`}
       >
         <div className="container-editorial flex h-[4.65rem] items-center justify-between">
           <Link to="/" aria-label="Dr Tarfaya - Accueil">
-            <Logo variant={scrolled ? "dark" : "light"} />
+            <Logo variant="dark" />
           </Link>
 
           <nav
@@ -77,11 +77,7 @@ export function Header() {
                 to="/"
                 hash={item.hash}
                 activeOptions={{ exact: true, includeHash: true }}
-                className={`text-[0.72rem] font-semibold uppercase tracking-[0.13em] transition-colors ${
-                  scrolled
-                    ? "text-midnight/65 hover:text-blue"
-                    : "text-plasma/70 hover:text-white"
-                }`}
+                className="text-[0.72rem] font-semibold uppercase tracking-[0.13em] text-midnight/65 transition-colors hover:text-blue"
               >
                 {item.label}
               </Link>
@@ -92,11 +88,7 @@ export function Header() {
             <Link
               to="/rendez-vous"
               preload="intent"
-              className={`hidden items-center gap-2 rounded-md px-4 py-3 text-xs font-semibold uppercase tracking-[0.08em] transition-colors sm:inline-flex ${
-                scrolled
-                  ? "bg-midnight text-plasma hover:bg-blue"
-                  : "bg-plasma text-midnight hover:bg-white"
-              }`}
+              className="hidden items-center gap-2 rounded-md bg-midnight px-4 py-3 text-xs font-semibold uppercase tracking-[0.08em] text-plasma transition-colors hover:bg-blue sm:inline-flex"
             >
               Demander un RDV
               <ArrowUpRight className="h-3.5 w-3.5" />
@@ -104,11 +96,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className={`grid h-11 w-11 place-items-center rounded-full border lg:hidden ${
-                scrolled
-                  ? "border-midnight/15 text-midnight"
-                  : "border-white/20 text-white"
-              }`}
+              className="grid h-11 w-11 place-items-center rounded-full border border-midnight/15 text-midnight lg:hidden"
               aria-label="Ouvrir le menu"
               aria-expanded={open}
               aria-controls="mobile-navigation"

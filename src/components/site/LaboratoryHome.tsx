@@ -36,7 +36,7 @@ const specialties = [
       "Prélèvements et examens prescrits, organisés avec des consignes claires avant votre venue.",
     points: [
       "Analyses sanguines",
-      "Bactériologie",
+      "Biochimie",
       "Sérologie",
       "Dosages hormonaux",
     ],
@@ -402,8 +402,8 @@ export function LaboratoryHome() {
                   transition={{ duration: 0.6, delay: 0.5 }}
                 >
                   <p className="max-w-xl text-base leading-7 text-plasma/74 md:text-lg">
-                    Analyses médicales, prélèvements et expertise en hématologie
-                    — pour passer d'un résultat à une prochaine étape claire.
+                    Analyses médicales, biochimie et expertise en hématologie —
+                    pour passer d'un résultat à une prochaine étape claire.
                     <span
                       dir="rtl"
                       className="mt-2 block font-medium text-white/88"
@@ -873,9 +873,10 @@ export function LaboratoryHome() {
               <em className="text-blue">Le médecin relie.</em>
             </h2>
             <p className="mt-7 max-w-xl text-lg leading-8 text-slate">
-              Médecin spécialiste en hématologie, Dr Tarfaya place l'explication
-              au cœur du parcours: comprendre le système sanguin, le rôle de
-              l'examen et ce que le résultat change pour la suite.
+              Médecin spécialiste en biochimie, Dr Tarfaya relie la mesure
+              biologique au contexte médical. Son approche associe rigueur
+              analytique, explication claire et orientation adaptée à chaque
+              dossier.
             </p>
             <div className="mt-9 border-l-2 border-coral pl-6">
               <span className="brand-label text-coral">

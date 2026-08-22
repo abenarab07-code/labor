@@ -18,7 +18,7 @@ export const Route = createFileRoute("/rendez-vous")({
       {
         name: "description",
         content:
-          "Demandez un rendez-vous pour une analyse ou une consultation en hématologie au laboratoire Dr Tarfaya à El Bouni.",
+          "Demandez un rendez-vous pour une analyse, un bilan biochimique ou une consultation en hématologie au laboratoire Dr Tarfaya à El Bouni.",
       },
       { property: "og:title", content: "Demander un rendez-vous — Dr Tarfaya" },
       {
@@ -46,9 +46,9 @@ function Page() {
               <span className="italic text-teal">la prochaine étape.</span>
             </h1>
             <p className="mt-6 text-ink/70 max-w-md">
-              Analyse, prélèvement ou consultation en hématologie: indiquez
-              votre besoin et l'équipe vous recontactera selon la disponibilité
-              du service.
+              Analyse, bilan biochimique, prélèvement ou consultation en
+              hématologie: indiquez votre besoin et l'équipe vous recontactera
+              selon la disponibilité du service.
             </p>
 
             <div className="mt-10 space-y-3">

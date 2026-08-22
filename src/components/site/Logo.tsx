@@ -12,14 +12,25 @@ export function Logo({
 
   return (
     <div className={`inline-flex items-center gap-3 ${className}`}>
-      <svg aria-hidden="true" viewBox="0 0 64 64" className="h-10 w-10 shrink-0 md:h-11 md:w-11">
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 64 64"
+        className="h-10 w-10 shrink-0 md:h-11 md:w-11"
+      >
         <path
           d="M32 4C24 15 15 25 15 38.1C15 48.8 22.6 57 32 57s17-8.2 17-18.9C49 25 40 15 32 4Z"
           fill="none"
           stroke={ink}
           strokeWidth="2.5"
         />
-        <circle cx="32" cy="37" r="9.4" fill="none" stroke="#146EF5" strokeWidth="2.5" />
+        <circle
+          cx="32"
+          cy="37"
+          r="9.4"
+          fill="none"
+          stroke="#146EF5"
+          strokeWidth="2.5"
+        />
         <ellipse
           cx="32"
           cy="37"
@@ -34,12 +45,18 @@ export function Logo({
       </svg>
       {showWordmark && (
         <div className="leading-none">
-          <div className="flex items-baseline gap-1.5" style={{ color: ink }}>
-            <span className="font-sans text-[0.62rem] font-semibold tracking-[0.18em]">DR</span>
-            <span className="font-display text-[1.38rem] tracking-[-0.02em]">Tarfaya</span>
+          <div className="flex items-baseline gap-1" style={{ color: ink }}>
+            <span className="font-display text-[1rem] tracking-[-0.01em]">
+              Dr
+            </span>
+            <span className="font-display text-[1.38rem] tracking-[-0.02em]">
+              Tarfaya
+            </span>
           </div>
-          <div className={`mt-1 text-[0.5rem] font-semibold uppercase tracking-[0.2em] ${sub}`}>
-            Laboratoire · Hématologie
+          <div
+            className={`mt-1 text-[0.5rem] font-semibold uppercase tracking-[0.2em] ${sub}`}
+          >
+            Analyses médicales · Biochimie
           </div>
         </div>
       )}

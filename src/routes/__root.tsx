@@ -44,9 +44,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-ivory px-4">
       <div className="max-w-md text-center">
-        <h1 className="font-serif text-3xl text-petrol">Cette page n'a pas pu se charger</h1>
+        <h1 className="font-serif text-3xl text-petrol">
+          Cette page n'a pas pu se charger
+        </h1>
         <p className="mt-3 text-sm text-ink/70">
-          Un incident temporaire s'est produit. Vous pouvez réessayer ou revenir à l'accueil.
+          Un incident temporaire s'est produit. Vous pouvez réessayer ou revenir
+          à l'accueil.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <button
@@ -75,26 +78,34 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Laboratoire Dr Tarfaya | Analyses & Hématologie à El Bouni, Annaba" },
+      { title: "Laboratoire Dr Tarfaya | Analyses, Biochimie & Hématologie" },
       {
         name: "description",
         content:
-          "Analyses médicales, prélèvements et consultation spécialisée en hématologie à El Bouni, Annaba.",
+          "Analyses médicales, biochimie, prélèvements et consultation en hématologie à El Bouni, Annaba.",
       },
       { name: "author", content: "Laboratoire Dr Tarfaya" },
       { name: "theme-color", content: "#071A2B" },
       { property: "og:site_name", content: "Laboratoire Dr Tarfaya" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "Dr Tarfaya — Votre sang raconte. Nous savons le lire." },
-      { name: "twitter:title", content: "Dr Tarfaya — Analyses & Hématologie" },
+      {
+        property: "og:title",
+        content: "Dr Tarfaya — Votre sang raconte. Nous savons le lire.",
+      },
+      {
+        name: "twitter:title",
+        content: "Dr Tarfaya — Analyses, Biochimie & Hématologie",
+      },
       {
         property: "og:description",
-        content: "Laboratoire d'analyses médicales et expertise en hématologie à El Bouni, Annaba.",
+        content:
+          "Laboratoire d'analyses médicales, biochimie et expertise en hématologie à El Bouni, Annaba.",
       },
       {
         name: "twitter:description",
-        content: "Laboratoire d'analyses médicales et expertise en hématologie à El Bouni, Annaba.",
+        content:
+          "Laboratoire d'analyses médicales, biochimie et expertise en hématologie à El Bouni, Annaba.",
       },
     ],
     links: [

@@ -31,10 +31,10 @@ export const serviceGroups: ServiceGroup[] = [
         body: "Les examens sont organisés selon la prescription et le contexte clinique communiqué au laboratoire.",
       },
       {
-        slug: "bacteriologie",
-        name: "Bactériologie",
-        short: "Examens bactériologiques selon prescription.",
-        body: "L'équipe vous indique les conditions pratiques de recueil ou de prélèvement avant votre venue.",
+        slug: "biochimie",
+        name: "Biochimie",
+        short: "Bilans biochimiques selon prescription.",
+        body: "Les dosages biochimiques explorent notamment le métabolisme, les fonctions rénale et hépatique ainsi que les équilibres biologiques prescrits par le médecin.",
       },
       {
         slug: "serologie",
@@ -77,4 +77,6 @@ export const serviceGroups: ServiceGroup[] = [
   },
 ];
 
-export const allServices: Service[] = serviceGroups.flatMap((group) => group.services);
+export const allServices: Service[] = serviceGroups.flatMap(
+  (group) => group.services,
+);

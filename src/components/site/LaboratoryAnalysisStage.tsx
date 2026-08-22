@@ -36,7 +36,7 @@ const analyses = [
     label: "Le quotidien, bien fait",
     title: "Analyses médicales",
     text: "Le prélèvement, l'examen et les consignes s'organisent avec clarté — avant même votre arrivée.",
-    points: ["Biochimie", "Bactériologie", "Sérologie", "Hormones"],
+    points: ["Biochimie", "Analyses sanguines", "Sérologie", "Hormones"],
     image: labAnalysis,
     avif: labAnalysisAvif,
     mobileAvif: labAnalysisMobileAvif,

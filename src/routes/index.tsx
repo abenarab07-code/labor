@@ -34,12 +34,12 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Laboratoire Dr Tarfaya | Analyses & Hématologie à El Bouni, Annaba",
+          "Laboratoire Dr Tarfaya | Analyses, Biochimie & Hématologie à El Bouni",
       },
       {
         name: "description",
         content:
-          "Laboratoire d'analyses médicales, prélèvements et consultation spécialisée en hématologie à El Bouni, Annaba. Contact WhatsApp et demande de rendez-vous.",
+          "Laboratoire d'analyses médicales, biochimie, prélèvements et consultation en hématologie à El Bouni, Annaba. Contact WhatsApp et demande de rendez-vous.",
       },
       {
         property: "og:title",
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Analyses médicales et expertise en hématologie à El Bouni, Annaba.",
+          "Analyses médicales, biochimie et expertise en hématologie à El Bouni, Annaba.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

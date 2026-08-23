@@ -62,7 +62,7 @@ export function Header() {
             : "border-midnight/8 bg-[#f4f8fc]/88 backdrop-blur-sm"
         }`}
       >
-        <div className="container-editorial flex h-[5.5rem] items-center justify-between">
+        <div className="container-editorial flex h-[4.75rem] items-center justify-between sm:h-[5.5rem]">
           <Link to="/" aria-label="Dr Tarfaya - Accueil">
             <Logo variant="dark" />
           </Link>
@@ -130,7 +130,7 @@ export function Header() {
                 : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
             }
           >
-            <div className="container-editorial flex h-[5.5rem] items-center justify-between">
+            <div className="container-editorial flex h-[4.75rem] items-center justify-between sm:h-[5.5rem]">
               <Logo variant="light" />
               <button
                 ref={closeButtonRef}

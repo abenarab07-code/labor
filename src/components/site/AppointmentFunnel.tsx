@@ -169,7 +169,7 @@ export function AppointmentFunnel({
         initial={reducedMotion ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: reducedMotion ? 0 : 0.5 }}
-        className="rounded-3xl bg-mint p-10 md:p-14 text-center"
+        className="rounded-2xl bg-mint p-6 text-center md:rounded-3xl md:p-14"
       >
         <div className="mx-auto h-16 w-16 rounded-full bg-petrol text-ivory flex items-center justify-center">
           <Check className="h-7 w-7" />
@@ -211,7 +211,7 @@ export function AppointmentFunnel({
 
   return (
     <form
-      className="rounded-3xl border border-border bg-card p-6 md:p-10"
+      className="rounded-2xl border border-border bg-card p-5 min-[390px]:p-6 md:rounded-3xl md:p-10"
       aria-busy={submitting}
       onSubmit={(event) => {
         event.preventDefault();
@@ -222,7 +222,7 @@ export function AppointmentFunnel({
         void handleSubmit();
       }}
     >
-      <div className="flex items-center gap-3 mb-8">
+      <div className="mb-7 flex items-center gap-2.5 md:mb-8 md:gap-3">
         {[0, 1, 2].map((s) => (
           <div key={s} className="flex-1">
             <div
@@ -231,7 +231,7 @@ export function AppointmentFunnel({
                 s <= step ? "bg-teal" : "bg-border"
               }`}
             />
-            <div className="mt-2 text-[0.68rem] uppercase tracking-wider text-ink/50">
+            <div className="mt-2 text-[0.56rem] uppercase tracking-[0.06em] text-ink/50 min-[390px]:text-[0.62rem] sm:text-[0.68rem] sm:tracking-wider">
               {["Demande", "Coordonnées", "Confirmation"][s]}
             </div>
           </div>
@@ -247,7 +247,7 @@ export function AppointmentFunnel({
             exit={reducedMotion ? undefined : { opacity: 0, x: -10 }}
             transition={{ duration: reducedMotion ? 0 : 0.3 }}
           >
-            <h3 className="font-serif text-2xl md:text-3xl text-petrol mb-6">
+            <h3 className="mb-5 font-serif text-2xl text-petrol md:mb-6 md:text-3xl">
               Quelle est votre demande ?
             </h3>
             <div className="grid gap-2 sm:grid-cols-2">
@@ -257,7 +257,7 @@ export function AppointmentFunnel({
                   type="button"
                   aria-pressed={data.service === s.slug}
                   onClick={() => setData({ ...data, service: s.slug })}
-                  className={`text-left rounded-xl border p-4 transition-all ${
+                  className={`rounded-xl border p-3.5 text-left transition-all min-[390px]:p-4 ${
                     data.service === s.slug
                       ? "border-teal bg-mint/40 ring-2 ring-teal/30"
                       : "border-border hover:border-teal/40"

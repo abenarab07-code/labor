@@ -26,7 +26,7 @@ export function Logo({
         }
         className={
           showWordmark
-            ? "h-auto w-[12.25rem] object-contain sm:w-[14rem]"
+            ? "h-auto w-[10.75rem] object-contain sm:w-[12.5rem] md:w-[14rem]"
             : "h-12 w-12 object-contain object-left"
         }
         width={600}

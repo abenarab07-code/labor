@@ -91,19 +91,19 @@ export function LaboratoryAnalysisStage() {
   return (
     <section ref={sectionRef} className="relative bg-plasma md:h-[300vh]">
       {!desktopStage ? (
-        <div className="container-editorial py-24 md:hidden">
+        <div className="container-editorial py-16 md:hidden">
           <div className="brand-label text-blue">Le bon niveau de lecture</div>
-          <h2 className="mt-5 max-w-[12ch] font-display text-5xl leading-[0.9] tracking-[-0.045em] text-midnight">
+          <h2 className="mt-4 max-w-[12ch] font-display text-[2.65rem] leading-[0.92] tracking-[-0.04em] text-midnight min-[390px]:text-5xl">
             Une analyse ne se résume pas à{" "}
             <em className="text-blue">un chiffre.</em>
           </h2>
-          <div className="mt-12 space-y-5">
+          <div className="mt-9 space-y-4">
             {analyses.map((item, index) => {
               const Icon = item.icon;
               return (
                 <motion.article
                   key={item.number}
-                  className="relative min-h-[520px] overflow-hidden rounded-[1.7rem] bg-midnight text-white"
+                  className="relative min-h-[440px] overflow-hidden rounded-[1.45rem] bg-midnight text-white min-[390px]:min-h-[470px]"
                   initial={reduced ? false : { opacity: 0, y: 38 }}
                   whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={
@@ -149,9 +149,9 @@ export function LaboratoryAnalysisStage() {
                   <span className="absolute right-5 top-5 font-mono text-xs tracking-[0.16em] text-coral">
                     {item.number}
                   </span>
-                  <div className="absolute inset-x-0 bottom-0 p-6">
+                  <div className="absolute inset-x-0 bottom-0 p-5 min-[390px]:p-6">
                     <div className="brand-label text-blue">{item.label}</div>
-                    <h3 className="mt-3 font-display text-4xl leading-[0.92] text-white">
+                    <h3 className="mt-3 font-display text-[2.15rem] leading-[0.94] text-white min-[390px]:text-4xl">
                       {item.title}
                     </h3>
                     <p className="mt-4 text-sm leading-6 text-white/68">

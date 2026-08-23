@@ -635,7 +635,7 @@ export function LaboratoryHome() {
       <section
         id="hematologie"
         ref={hematologyRef}
-        className="relative scroll-mt-24 overflow-hidden bg-midnight py-24 text-plasma md:py-36"
+        className="relative scroll-mt-24 overflow-hidden bg-midnight py-16 text-plasma md:py-36"
       >
         <picture className="absolute inset-0 block">
           <source srcSet={bloodSmearAvif} type="image/avif" />
@@ -677,7 +677,7 @@ export function LaboratoryHome() {
             <div className="brand-label text-coral">
               Hématologie spécialisée
             </div>
-            <h2 className="mt-5 max-w-[10ch] font-display text-[clamp(3.1rem,7vw,7rem)] leading-[0.89] tracking-[-0.045em] text-white">
+            <h2 className="mt-4 max-w-[10ch] font-display text-[clamp(2.65rem,12vw,3.5rem)] leading-[0.91] tracking-[-0.04em] text-white md:mt-5 md:text-[clamp(3.1rem,7vw,7rem)] md:leading-[0.89] md:tracking-[-0.045em]">
               Voir ce que le bilan seul ne montre pas.
             </h2>
           </Reveal>
@@ -719,12 +719,12 @@ export function LaboratoryHome() {
         </div>
       </section>
 
-      <section id="parcours" className="scroll-mt-24 bg-white py-24 md:py-36">
+      <section id="parcours" className="scroll-mt-24 bg-white py-16 md:py-36">
         <div className="container-editorial">
           <div className="grid gap-12 lg:grid-cols-12">
             <Reveal className="lg:col-span-4">
               <div className="brand-label text-blue">Avant de venir</div>
-              <h2 className="mt-5 font-display text-5xl leading-[0.92] text-midnight md:text-7xl">
+              <h2 className="mt-4 font-display text-[2.65rem] leading-[0.93] text-midnight min-[390px]:text-5xl md:mt-5 md:text-7xl">
                 Un parcours qui commence{" "}
                 <em className="text-blue">avant le prélèvement.</em>
               </h2>
@@ -796,7 +796,7 @@ export function LaboratoryHome() {
       <section
         id="docteur"
         ref={doctorRef}
-        className="scroll-mt-24 overflow-hidden bg-plasma py-24 md:py-36"
+        className="scroll-mt-24 overflow-hidden bg-plasma py-16 md:py-36"
       >
         <div className="container-editorial grid gap-14 lg:grid-cols-12 lg:items-center">
           <motion.div
@@ -815,7 +815,7 @@ export function LaboratoryHome() {
             }
           >
             <motion.div
-              className="relative mx-auto max-w-[420px] overflow-hidden rounded-[2rem] bg-midnight shadow-[0_40px_100px_-45px_rgba(7,26,43,0.55)]"
+              className="relative mx-auto max-w-[300px] overflow-hidden rounded-[1.6rem] bg-midnight shadow-[0_40px_100px_-45px_rgba(7,26,43,0.55)] min-[390px]:max-w-[330px] sm:max-w-[360px] md:max-w-[420px] md:rounded-[2rem]"
               whileHover={
                 reducedMotion ? undefined : { y: -8, rotate: 0.6, scale: 1.01 }
               }
@@ -868,7 +868,7 @@ export function LaboratoryHome() {
 
           <Reveal className="lg:col-span-6 lg:col-start-7" delay={0.1}>
             <div className="brand-label text-blue">Dr Tarfaya Radya</div>
-            <h2 className="mt-5 font-display text-[clamp(3.2rem,6.5vw,6.6rem)] leading-[0.89] tracking-[-0.045em] text-midnight">
+            <h2 className="mt-4 font-display text-[clamp(2.65rem,12vw,3.5rem)] leading-[0.91] tracking-[-0.04em] text-midnight md:mt-5 md:text-[clamp(3.2rem,6.5vw,6.6rem)] md:leading-[0.89] md:tracking-[-0.045em]">
               Le laboratoire observe.{" "}
               <em className="text-blue">Le médecin relie.</em>
             </h2>
@@ -905,11 +905,11 @@ export function LaboratoryHome() {
         </div>
       </section>
 
-      <section id="questions" className="scroll-mt-24 bg-white py-24 md:py-32">
+      <section id="questions" className="scroll-mt-24 bg-white py-16 md:py-32">
         <div className="container-editorial grid gap-14 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
             <div className="brand-label text-blue">Questions utiles</div>
-            <h2 className="mt-5 font-display text-5xl leading-[0.92] text-midnight md:text-7xl">
+            <h2 className="mt-4 font-display text-[2.65rem] leading-[0.93] text-midnight min-[390px]:text-5xl md:mt-5 md:text-7xl">
               Avant d'écrire au laboratoire.
             </h2>
           </Reveal>
@@ -929,7 +929,7 @@ export function LaboratoryHome() {
       <section
         id="contact"
         ref={contactRef}
-        className="relative scroll-mt-24 overflow-hidden bg-blue py-20 text-white md:py-28"
+        className="relative scroll-mt-24 overflow-hidden bg-blue py-16 text-white md:py-28"
       >
         <motion.div
           aria-hidden="true"
@@ -958,7 +958,7 @@ export function LaboratoryHome() {
               <div className="brand-label text-white/65">
                 La prochaine étape
               </div>
-              <h2 className="mt-5 max-w-[11ch] font-display text-[clamp(3.2rem,7vw,7rem)] leading-[0.88] tracking-[-0.05em] text-white">
+              <h2 className="mt-4 max-w-[11ch] font-display text-[clamp(2.65rem,12vw,3.5rem)] leading-[0.91] tracking-[-0.04em] text-white md:mt-5 md:text-[clamp(3.2rem,7vw,7rem)] md:leading-[0.88] md:tracking-[-0.05em]">
                 Dites-nous ce que votre ordonnance demande.
               </h2>
             </Reveal>

@@ -36,22 +36,22 @@ function Page() {
   const { soin } = Route.useSearch();
   return (
     <SiteShell>
-      <section className="pt-32 md:pt-40 pb-24 bg-gradient-to-b from-mint/40 via-ivory to-ivory">
+      <section className="bg-gradient-to-b from-mint/40 via-ivory to-ivory pb-16 pt-24 md:pb-24 md:pt-40">
         <div className="container-editorial grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <div className="eyebrow mb-4">Demande de rendez-vous</div>
-            <h1 className="font-serif text-5xl md:text-6xl text-petrol leading-[1.05]">
+            <div className="eyebrow mb-3 md:mb-4">Demande de rendez-vous</div>
+            <h1 className="font-serif text-[2.65rem] leading-[1.03] text-petrol min-[390px]:text-5xl md:text-6xl">
               Clarifions
               <br />
               <span className="italic text-teal">la prochaine étape.</span>
             </h1>
-            <p className="mt-6 text-ink/70 max-w-md">
+            <p className="mt-5 max-w-md text-sm leading-6 text-ink/70 sm:text-base">
               Analyse, bilan biochimique, prélèvement ou consultation en
               hématologie: indiquez votre besoin et l'équipe vous recontactera
               selon la disponibilité du service.
             </p>
 
-            <div className="mt-10 space-y-3">
+            <div className="mt-7 space-y-3 md:mt-10">
               <a
                 href={clinic.phoneHref}
                 className="flex items-center gap-3 rounded-xl border border-border p-4 hover:border-teal/50 transition-colors"

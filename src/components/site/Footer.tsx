@@ -63,7 +63,7 @@ export function Footer() {
 
         <div className="flex flex-col gap-3 pt-6 text-[0.68rem] uppercase tracking-[0.12em] text-plasma/40 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Laboratoire Dr Tarfaya</p>
-          <p>El Bouni · Annaba · Algérie</p>
+          <p>Annaba · El Bouni · Algérie</p>
           <p>Le site ne remplace pas une consultation médicale.</p>
         </div>
       </div>

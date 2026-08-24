@@ -109,7 +109,7 @@ export function LaboratoryHero() {
         >
           <div className="mb-5 flex items-center gap-3 md:mb-6">
             <span className="h-px w-7 bg-coral md:w-9" />
-            <span className="brand-label text-blue">El Bouni · Annaba</span>
+            <span className="brand-label text-blue">Annaba · El Bouni</span>
             <span className="hidden text-[0.62rem] text-slate/70 sm:inline">
               Biologie médicale de précision
             </span>
@@ -119,18 +119,19 @@ export function LaboratoryHero() {
             <span className="block">Des analyses</span>
             <span className="block italic text-blue">précises.</span>
             <span className="mt-2 block text-[0.48em] leading-[1.02] tracking-[-0.035em]">
-              Une lecture médicale claire.
+              Une interprétation claire et précise.
             </span>
           </h1>
 
           <p className="mt-6 max-w-xl text-[0.94rem] leading-6 text-slate sm:mt-7 sm:text-base sm:leading-7 md:text-lg">
-            Analyses médicales, biochimie et expertise en hématologie pour
-            transformer chaque résultat en une information utile et lisible.
+            Analyses médicales, biochimie, hématologie, hormonologie et
+            immunologie, avec cytologie médullaire et ganglionnaire.
             <span
               dir="rtl"
               className="mt-3 block text-sm font-medium leading-6 text-midnight/80 sm:text-base"
             >
-              تحاليل طبية، كيمياء حيوية واستشارة في أمراض الدم
+              تحاليل طبية، كيمياء حيوية، أمراض الدم، الهرمونات والمناعة، مع علم
+              الخلايا النخاعية والعقدية
             </span>
           </p>
 
@@ -249,10 +250,10 @@ export function LaboratoryHero() {
                 <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-white sm:bottom-6 sm:left-6 sm:right-6">
                   <div>
                     <div className="brand-label text-blue">
-                      Lecture biologique
+                      Lecture cytologique de précision
                     </div>
                     <div className="mt-1.5 font-display text-2xl sm:mt-2 sm:text-3xl">
-                      Mesurer. Comprendre. Orienter.
+                      Observer. Interpréter. Poser le diagnostic.
                     </div>
                   </div>
                   <span className="hidden font-mono text-[0.55rem] tracking-[0.14em] text-white/40 sm:block">

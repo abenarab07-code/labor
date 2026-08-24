@@ -33,10 +33,10 @@ import doctorPosterMobileAvif from "@/assets/brand/dr-tarfaya-poster-clean-768.a
 const analyses = [
   {
     number: "01",
-    label: "Le quotidien, bien fait",
+    label: "Analyses médicales de précision",
     title: "Analyses médicales",
     text: "Le prélèvement, l'examen et les consignes s'organisent avec clarté — avant même votre arrivée.",
-    points: ["Biochimie", "Analyses sanguines", "Sérologie", "Hormones"],
+    points: ["Biochimie", "Hématologie", "Hormonologie", "Immunologie"],
     image: labAnalysis,
     avif: labAnalysisAvif,
     mobileAvif: labAnalysisMobileAvif,
@@ -45,10 +45,14 @@ const analyses = [
   },
   {
     number: "02",
-    label: "Lire au-delà du chiffre",
-    title: "Hématologie spécialisée",
-    text: "Quand le bilan ne suffit pas, l'observation des cellules apporte un autre niveau de lecture médicale.",
-    points: ["Frottis sanguin", "Cytologie médullaire", "Lecture spécialisée"],
+    label: "Lecture cytologique de précision",
+    title: "Cytologie spécialisée",
+    text: "Observer les cellules du sang, de la moelle osseuse et des ganglions pour interpréter les anomalies et poser le diagnostic.",
+    points: [
+      "Frottis sanguin",
+      "Cytologie médullaire",
+      "Cytologie ganglionnaire",
+    ],
     image: bloodSmear,
     avif: bloodSmearAvif,
     mobileAvif: bloodSmearMobileAvif,
@@ -92,7 +96,9 @@ export function LaboratoryAnalysisStage() {
     <section ref={sectionRef} className="relative bg-plasma md:h-[300vh]">
       {!desktopStage ? (
         <div className="container-editorial py-16 md:hidden">
-          <div className="brand-label text-blue">Le bon niveau de lecture</div>
+          <div className="brand-label text-blue">
+            Une interprétation fiable et précise
+          </div>
           <h2 className="mt-4 max-w-[12ch] font-display text-[2.65rem] leading-[0.92] tracking-[-0.04em] text-midnight min-[390px]:text-5xl">
             Une analyse ne se résume pas à{" "}
             <em className="text-blue">un chiffre.</em>

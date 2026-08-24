@@ -3,7 +3,7 @@ export const clinic = {
   fullName: "Laboratoire Dr Tarfaya",
   tagline: "Laboratoire d'analyses médicales & Biochimie",
   positioning:
-    "Analyses médicales, biochimie, prélèvements et consultation en hématologie à El Bouni, Annaba.",
+    "Analyses médicales, biochimie, hématologie, hormonologie, immunologie et cytologie à Annaba, El Bouni.",
   phone: "0792 57 05 57",
   phoneHref: "tel:+213792570557",
   whatsapp: "0792 57 05 57",

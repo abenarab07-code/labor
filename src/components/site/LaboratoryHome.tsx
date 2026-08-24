@@ -34,12 +34,7 @@ const specialties = [
     title: "Analyses médicales",
     description:
       "Prélèvements et examens prescrits, organisés avec des consignes claires avant votre venue.",
-    points: [
-      "Analyses sanguines",
-      "Biochimie",
-      "Sérologie",
-      "Dosages hormonaux",
-    ],
+    points: ["Biochimie", "Hématologie", "Hormonologie", "Immunologie"],
     icon: FlaskConical,
     image: labAnalysis,
     avif: labAnalysisAvif,
@@ -48,10 +43,14 @@ const specialties = [
     id: "hematologie",
     number: "02",
     kicker: "L'expertise qui va plus loin",
-    title: "Hématologie spécialisée",
+    title: "Cytologie spécialisée",
     description:
       "Une lecture médicale spécialisée lorsque les cellules du sang, la moelle ou un résultat nécessitent une exploration ciblée.",
-    points: ["Frottis sanguin", "Cytologie médullaire", "Lecture spécialisée"],
+    points: [
+      "Frottis sanguin",
+      "Cytologie médullaire",
+      "Cytologie ganglionnaire",
+    ],
     icon: Microscope,
     image: bloodSmear,
     avif: bloodSmearAvif,
@@ -348,7 +347,7 @@ export function LaboratoryHome() {
                   transition={{ duration: 0.55, delay: 0.1 }}
                 >
                   <span className="brand-label text-blue">
-                    El Bouni · Annaba
+                    Annaba · El Bouni
                   </span>
                   <span className="h-px w-10 bg-white/20" />
                   <span className="text-xs text-plasma/58">
@@ -489,7 +488,7 @@ export function LaboratoryHome() {
               <div className="grid items-end gap-10 lg:grid-cols-12">
                 <Reveal className="lg:col-span-7">
                   <div className="brand-label text-blue">
-                    Le bon niveau de lecture
+                    Une interprétation fiable et précise
                   </div>
                   <h2 className="mt-5 max-w-[13ch] font-display text-[clamp(3rem,7vw,6.8rem)] leading-[0.9] tracking-[-0.045em] text-midnight">
                     Une analyse ne se résume pas à{" "}
@@ -675,24 +674,27 @@ export function LaboratoryHome() {
         <div className="container-editorial relative grid gap-16 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-6">
             <div className="brand-label text-coral">
-              Hématologie spécialisée
+              Lecture cytologique de précision
             </div>
             <h2 className="mt-4 max-w-[10ch] font-display text-[clamp(2.65rem,12vw,3.5rem)] leading-[0.91] tracking-[-0.04em] text-white md:mt-5 md:text-[clamp(3.1rem,7vw,7rem)] md:leading-[0.89] md:tracking-[-0.045em]">
-              Voir ce que le bilan seul ne montre pas.
+              Frottis sanguin et médullogramme.
             </h2>
           </Reveal>
           <Reveal className="lg:col-span-5 lg:col-start-8" delay={0.14}>
             <p className="text-lg leading-8 text-plasma/74">
-              Le frottis sanguin et la cytologie médullaire observent les
-              cellules elles-mêmes. Cette lecture spécialisée complète les
-              chiffres quand le contexte médical l'exige.
+              Le frottis sanguin et le médullogramme sont deux examens de très
+              grande valeur diagnostique. L'étude cytologique précise des
+              éléments figurés du sang et de la moelle osseuse permet de
+              détecter d'éventuelles anomalies, de poser ou d'écarter le
+              diagnostic d'hémopathies malignes et d'autres pathologies bénignes
+              du sang.
             </p>
             <div className="mt-9 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2">
               {[
                 "Frottis sanguin",
-                "Cytologie médullaire",
-                "Consultation spécialisée",
-                "Orientation du bilan",
+                "Ponction de moelle osseuse sous sédation",
+                "Cytologie ganglionnaire",
+                "Biopsie ostéomédullaire sous anesthésie",
               ].map((label, index) => (
                 <div
                   key={label}
@@ -878,6 +880,12 @@ export function LaboratoryHome() {
               analytique, explication claire et orientation adaptée à chaque
               dossier.
             </p>
+            <p className="mt-5 max-w-xl text-base leading-7 text-slate">
+              Notre laboratoire d'analyses médicales est en plein développement.
+              Notre vocation est de répondre aux besoins de nos patients et de
+              leurs médecins traitants grâce à des examens validés par notre
+              médecin spécialiste.
+            </p>
             <div className="mt-9 border-l-2 border-coral pl-6">
               <span className="brand-label text-coral">
                 Le principe de la marque
@@ -1007,7 +1015,7 @@ export function LaboratoryHome() {
             >
               <MapPin className="mt-0.5 h-5 w-5 shrink-0" />
               <span>
-                <strong className="block">El Bouni, Annaba</strong>
+                <strong className="block">Annaba, El Bouni</strong>
                 <span className="mt-1 block text-sm text-white/65">
                   {clinic.address.line1}
                 </span>

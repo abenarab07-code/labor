@@ -140,6 +140,7 @@ function Reveal({
     <motion.div
       className={className}
       initial={reducedMotion ? false : { opacity: 0, y: 42 }}
+      animate={reducedMotion ? { opacity: 1, y: 0 } : undefined}
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={
         reducedMotion ? undefined : { once: true, margin: "-12% 0px -8% 0px" }
@@ -166,6 +167,7 @@ function FaqItem({
   return (
     <motion.div
       initial={reducedMotion ? false : { opacity: 0, x: 28 }}
+      animate={reducedMotion ? { opacity: 1, x: 0 } : undefined}
       whileInView={reducedMotion ? undefined : { opacity: 1, x: 0 }}
       viewport={reducedMotion ? undefined : { once: true, margin: "-5%" }}
       transition={
@@ -634,7 +636,7 @@ export function LaboratoryHome() {
       <section
         id="hematologie"
         ref={hematologyRef}
-        className="relative scroll-mt-24 overflow-hidden bg-midnight py-16 text-plasma md:py-36"
+        className="relative scroll-mt-24 overflow-hidden bg-midnight py-12 text-plasma md:py-36"
       >
         <picture className="absolute inset-0 block">
           <source srcSet={bloodSmearAvif} type="image/avif" />
@@ -645,6 +647,7 @@ export function LaboratoryHome() {
             loading="lazy"
             decoding="async"
             initial={reducedMotion ? false : { scale: 1.08 }}
+            animate={reducedMotion ? { scale: 1 } : undefined}
             whileInView={reducedMotion ? undefined : { scale: 1 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 1.8, ease: easeOut }}
@@ -671,7 +674,7 @@ export function LaboratoryHome() {
           <span className="absolute left-1/2 top-0 h-2 w-2 rounded-full bg-coral shadow-[0_0_24px_6px_rgba(239,93,88,0.35)]" />
           <span className="absolute inset-[18%] rounded-full border border-dashed border-white/10" />
         </motion.div>
-        <div className="container-editorial relative grid gap-16 lg:grid-cols-12 lg:items-center">
+        <div className="container-editorial relative grid gap-10 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-6">
             <div className="brand-label text-coral">
               Lecture cytologique de précision
@@ -689,7 +692,7 @@ export function LaboratoryHome() {
               diagnostic d'hémopathies malignes et d'autres pathologies bénignes
               du sang.
             </p>
-            <div className="mt-9 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-2">
+            <div className="mt-6 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:mt-9 sm:grid-cols-2">
               {[
                 "Frottis sanguin",
                 "Ponction de moelle osseuse sous sédation",
@@ -698,7 +701,7 @@ export function LaboratoryHome() {
               ].map((label, index) => (
                 <div
                   key={label}
-                  className="flex items-start gap-3 bg-midnight/86 p-5"
+                  className="flex items-start gap-3 bg-midnight/86 p-4 sm:p-5"
                 >
                   <span className="mt-0.5 text-[0.6rem] font-bold tracking-[0.13em] text-coral">
                     0{index + 1}
@@ -713,7 +716,7 @@ export function LaboratoryHome() {
               to="/rendez-vous"
               search={{ soin: "consultation-hematologie" }}
               preload="intent"
-              className="mt-8 inline-flex items-center gap-3 border-b border-blue pb-2 text-sm font-semibold text-white hover:text-blue"
+              className="mt-6 inline-flex items-center gap-3 border-b border-blue pb-2 text-sm font-semibold text-white hover:text-blue sm:mt-8"
             >
               Demander une consultation <ArrowUpRight className="h-4 w-4" />
             </Link>
@@ -721,9 +724,12 @@ export function LaboratoryHome() {
         </div>
       </section>
 
-      <section id="parcours" className="scroll-mt-24 bg-white py-16 md:py-36">
+      <section
+        id="parcours"
+        className="scroll-mt-24 overflow-hidden bg-white py-12 md:py-36"
+      >
         <div className="container-editorial">
-          <div className="grid gap-12 lg:grid-cols-12">
+          <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
             <Reveal className="lg:col-span-4">
               <div className="brand-label text-blue">Avant de venir</div>
               <h2 className="mt-4 font-display text-[2.65rem] leading-[0.93] text-midnight min-[390px]:text-5xl md:mt-5 md:text-7xl">
@@ -732,7 +738,7 @@ export function LaboratoryHome() {
               </h2>
               <a
                 href={buildWhatsAppUrl("prelevement")}
-                className="mt-8 inline-flex items-center gap-3 rounded-md bg-midnight px-5 py-4 text-sm font-semibold text-white hover:bg-blue"
+                className="mt-6 inline-flex items-center gap-3 rounded-md bg-midnight px-5 py-4 text-sm font-semibold text-white hover:bg-blue sm:mt-8"
               >
                 Vérifier mes consignes <MessageCircle className="h-4 w-4" />
               </a>
@@ -742,8 +748,9 @@ export function LaboratoryHome() {
               {journey.map((step, index) => (
                 <motion.div
                   key={step.number}
-                  className="group relative grid gap-5 overflow-hidden border-t border-midnight/12 py-7 sm:grid-cols-[70px_1fr] md:grid-cols-[90px_1fr_1fr]"
+                  className="group relative grid gap-3 overflow-hidden border-t border-midnight/12 py-5 sm:grid-cols-[70px_1fr] sm:gap-5 sm:py-7 md:grid-cols-[90px_1fr_1fr]"
                   initial={reducedMotion ? false : { opacity: 0, x: 48 }}
+                  animate={reducedMotion ? { opacity: 1, x: 0 } : undefined}
                   whileInView={reducedMotion ? undefined : { opacity: 1, x: 0 }}
                   viewport={
                     reducedMotion ? undefined : { once: true, margin: "-8%" }
@@ -762,6 +769,7 @@ export function LaboratoryHome() {
                     aria-hidden="true"
                     className="absolute left-0 top-0 h-px w-full origin-left bg-blue"
                     initial={reducedMotion ? false : { scaleX: 0 }}
+                    animate={reducedMotion ? { scaleX: 1 } : undefined}
                     whileInView={reducedMotion ? undefined : { scaleX: 1 }}
                     viewport={reducedMotion ? undefined : { once: true }}
                     transition={
@@ -786,7 +794,7 @@ export function LaboratoryHome() {
                   {index === journey.length - 1 && <div className="hidden" />}
                 </motion.div>
               ))}
-              <div className="border-t border-midnight/12 pt-6 text-xs leading-5 text-slate">
+              <div className="border-t border-midnight/12 pt-4 text-xs leading-5 text-slate sm:pt-6">
                 Une urgence vitale ne passe pas par ce parcours: contactez les
                 services d'urgence.
               </div>
@@ -798,13 +806,16 @@ export function LaboratoryHome() {
       <section
         id="docteur"
         ref={doctorRef}
-        className="scroll-mt-24 overflow-hidden bg-plasma py-16 md:py-36"
+        className="scroll-mt-24 overflow-hidden bg-plasma py-12 md:py-36"
       >
-        <div className="container-editorial grid gap-14 lg:grid-cols-12 lg:items-center">
+        <div className="container-editorial grid gap-9 lg:grid-cols-12 lg:items-center">
           <motion.div
             className="relative lg:col-span-5"
             initial={
               reducedMotion ? false : { opacity: 0, x: -45, rotate: -1.5 }
+            }
+            animate={
+              reducedMotion ? { opacity: 1, x: 0, rotate: 0 } : undefined
             }
             whileInView={
               reducedMotion ? undefined : { opacity: 1, x: 0, rotate: 0 }
@@ -874,19 +885,19 @@ export function LaboratoryHome() {
               Le laboratoire observe.{" "}
               <em className="text-blue">Le médecin relie.</em>
             </h2>
-            <p className="mt-7 max-w-xl text-lg leading-8 text-slate">
+            <p className="mt-5 max-w-xl text-lg leading-8 text-slate sm:mt-7">
               Médecin spécialiste en biochimie, Dr Tarfaya relie la mesure
               biologique au contexte médical. Son approche associe rigueur
               analytique, explication claire et orientation adaptée à chaque
               dossier.
             </p>
-            <p className="mt-5 max-w-xl text-base leading-7 text-slate">
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate sm:mt-5">
               Notre laboratoire d'analyses médicales est en plein développement.
               Notre vocation est de répondre aux besoins de nos patients et de
               leurs médecins traitants grâce à des examens validés par notre
               médecin spécialiste.
             </p>
-            <div className="mt-9 border-l-2 border-coral pl-6">
+            <div className="mt-6 border-l-2 border-coral pl-5 sm:mt-9 sm:pl-6">
               <span className="brand-label text-coral">
                 Le principe de la marque
               </span>
@@ -895,7 +906,7 @@ export function LaboratoryHome() {
                 comprend pas.
               </p>
             </div>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
               <a
                 href={buildWhatsAppUrl("hematologie")}
                 className="inline-flex items-center gap-3 rounded-md bg-blue px-5 py-4 text-sm font-semibold text-white hover:bg-midnight"
@@ -913,8 +924,11 @@ export function LaboratoryHome() {
         </div>
       </section>
 
-      <section id="questions" className="scroll-mt-24 bg-white py-16 md:py-32">
-        <div className="container-editorial grid gap-14 lg:grid-cols-12">
+      <section
+        id="questions"
+        className="scroll-mt-24 overflow-hidden bg-white py-12 md:py-32"
+      >
+        <div className="container-editorial grid gap-8 lg:grid-cols-12 lg:gap-14">
           <Reveal className="lg:col-span-5">
             <div className="brand-label text-blue">Questions utiles</div>
             <h2 className="mt-4 font-display text-[2.65rem] leading-[0.93] text-midnight min-[390px]:text-5xl md:mt-5 md:text-7xl">
@@ -937,7 +951,7 @@ export function LaboratoryHome() {
       <section
         id="contact"
         ref={contactRef}
-        className="relative scroll-mt-24 overflow-hidden bg-blue py-16 text-white md:py-28"
+        className="relative scroll-mt-24 overflow-hidden bg-blue py-12 text-white md:py-28"
       >
         <motion.div
           aria-hidden="true"
@@ -961,7 +975,7 @@ export function LaboratoryHome() {
         </motion.div>
         <div className="absolute inset-0 field-grid opacity-30" />
         <div className="container-editorial relative">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-end">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
             <Reveal className="lg:col-span-7">
               <div className="brand-label text-white/65">
                 La prochaine étape
@@ -975,7 +989,7 @@ export function LaboratoryHome() {
                 Avant de vous déplacer, confirmez l'analyse, la préparation et
                 la disponibilité du service.
               </p>
-              <div className="mt-7 grid gap-3">
+              <div className="mt-5 grid gap-3 sm:mt-7">
                 <a
                   href={buildWhatsAppUrl("analyse")}
                   className="group flex items-center justify-between rounded-md bg-white px-5 py-4 font-semibold text-midnight"
@@ -1001,7 +1015,7 @@ export function LaboratoryHome() {
           </div>
 
           <motion.div
-            className="mt-14 grid gap-px overflow-hidden rounded-xl bg-white/18 md:grid-cols-3"
+            className="mt-8 grid gap-px overflow-hidden rounded-xl bg-white/18 sm:mt-14 md:grid-cols-3"
             initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1011,7 +1025,7 @@ export function LaboratoryHome() {
               href={clinic.mapsHref}
               target="_blank"
               rel="noreferrer"
-              className="flex gap-4 bg-blue p-6 transition-colors hover:bg-blue-dark"
+              className="flex gap-4 bg-blue p-5 transition-colors hover:bg-blue-dark sm:p-6"
             >
               <MapPin className="mt-0.5 h-5 w-5 shrink-0" />
               <span>
@@ -1021,7 +1035,7 @@ export function LaboratoryHome() {
                 </span>
               </span>
             </a>
-            <div className="flex gap-4 bg-blue p-6">
+            <div className="flex gap-4 bg-blue p-5 sm:p-6">
               <Clock3 className="mt-0.5 h-5 w-5 shrink-0" />
               <span>
                 <strong className="block">Samedi - Jeudi</strong>
@@ -1033,7 +1047,7 @@ export function LaboratoryHome() {
             <Link
               to="/rendez-vous"
               preload="intent"
-              className="flex gap-4 bg-blue p-6 transition-colors hover:bg-blue-dark"
+              className="flex gap-4 bg-blue p-5 transition-colors hover:bg-blue-dark sm:p-6"
             >
               <FileText className="mt-0.5 h-5 w-5 shrink-0" />
               <span>

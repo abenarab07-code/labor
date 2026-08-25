@@ -98,15 +98,15 @@ function Home() {
       <LaboratoryHero />
       <LazyInView
         id="analyses"
-        className="scroll-mt-24 min-h-[1800px] md:min-h-[300svh]"
-        rootMargin="-1px 0px"
+        className="scroll-mt-24 min-h-[1460px] min-[390px]:min-h-[1540px] md:min-h-[300svh]"
+        rootMargin="700px 0px"
         mountOnHash={analysisHashes}
       >
         <LaboratoryAnalysisStage />
       </LazyInView>
       <LazyInView
         minHeight={3600}
-        rootMargin="900px 0px"
+        rootMargin="1600px 0px"
         mountOnHash={afterFoldHashes}
       >
         <LaboratoryAfterFold />

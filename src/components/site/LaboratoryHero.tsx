@@ -93,7 +93,7 @@ export function LaboratoryHero() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-[#f4f8fc] pb-12 pt-24 text-midnight md:min-h-[100svh] md:pb-28 md:pt-32"
+      className="relative overflow-hidden bg-[#f4f8fc] pb-8 pt-24 text-midnight md:min-h-[100svh] md:pb-28 md:pt-32"
     >
       <div className="absolute inset-0 bg-[radial-gradient(75%_78%_at_82%_34%,rgba(20,110,245,0.13)_0%,rgba(230,242,255,0.38)_42%,transparent_74%),linear-gradient(145deg,#fbfdff_0%,#f4f8fc_58%,#eaf3fb_100%)]" />
       <div className="absolute inset-0 field-grid opacity-[0.09]" />
@@ -102,7 +102,7 @@ export function LaboratoryHero() {
         className="absolute -left-24 top-[18%] h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(20,110,245,0.08),transparent_70%)] blur-2xl"
       />
 
-      <div className="container-editorial relative grid items-center gap-10 md:min-h-[calc(100svh-12rem)] md:gap-16 lg:grid-cols-12 lg:gap-12">
+      <div className="container-editorial relative grid items-center gap-7 md:min-h-[calc(100svh-12rem)] md:gap-16 lg:grid-cols-12 lg:gap-12">
         <motion.div
           className="relative z-10 lg:col-span-6 xl:col-span-6"
           style={reduced ? undefined : { y: copyY, opacity: copyOpacity }}
@@ -123,19 +123,19 @@ export function LaboratoryHero() {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-[0.94rem] leading-6 text-slate sm:mt-7 sm:text-base sm:leading-7 md:text-lg">
+          <p className="mt-5 max-w-xl text-[0.94rem] leading-6 text-slate sm:mt-7 sm:text-base sm:leading-7 md:text-lg">
             Analyses médicales, biochimie, hématologie, hormonologie et
             immunologie, avec cytologie médullaire et ganglionnaire.
             <span
               dir="rtl"
-              className="mt-3 block text-sm font-medium leading-6 text-midnight/80 sm:text-base"
+              className="mt-2 block text-sm font-medium leading-6 text-midnight/80 sm:mt-3 sm:text-base"
             >
               تحاليل طبية، كيمياء حيوية، أمراض الدم، الهرمونات والمناعة، مع علم
               الخلايا النخاعية والعقدية
             </span>
           </p>
 
-          <div className="mt-7 grid gap-3 sm:mt-8 sm:flex sm:flex-wrap">
+          <div className="mt-5 grid gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
             <MagneticButton
               as="a"
               href="/rendez-vous"
@@ -152,7 +152,7 @@ export function LaboratoryHero() {
             </a>
           </div>
 
-          <div className="mt-8 grid max-w-xl grid-cols-3 border-y border-midnight/10 sm:mt-10">
+          <div className="mt-6 grid max-w-xl grid-cols-3 border-y border-midnight/10 sm:mt-10">
             {[
               [FlaskConical, "Analyses"],
               [Microscope, "Biochimie"],
@@ -162,7 +162,7 @@ export function LaboratoryHero() {
               return (
                 <div
                   key={label as string}
-                  className={`flex min-w-0 flex-col items-center justify-center gap-1.5 py-3.5 text-center sm:flex-row sm:justify-start sm:gap-2 sm:py-4 ${index ? "border-l border-midnight/10 sm:pl-5" : ""}`}
+                  className={`flex min-w-0 flex-col items-center justify-center gap-1.5 py-3 text-center sm:flex-row sm:justify-start sm:gap-2 sm:py-4 ${index ? "border-l border-midnight/10 sm:pl-5" : ""}`}
                 >
                   <IconComponent className="h-3.5 w-3.5 shrink-0 text-coral" />
                   <span className="text-[0.5rem] font-semibold uppercase tracking-[0.07em] text-midnight/58 min-[390px]:text-[0.54rem] sm:text-[0.65rem] sm:tracking-[0.1em]">

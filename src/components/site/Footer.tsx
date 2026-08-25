@@ -6,8 +6,8 @@ import { Logo } from "./Logo";
 export function Footer() {
   return (
     <footer className="bg-midnight-deep pb-[calc(5rem+env(safe-area-inset-bottom))] text-plasma lg:pb-0">
-      <div className="container-editorial py-14 md:py-20">
-        <div className="grid gap-12 border-b border-white/10 pb-14 lg:grid-cols-12">
+      <div className="container-editorial py-10 md:py-20">
+        <div className="grid gap-8 border-b border-white/10 pb-10 sm:gap-12 sm:pb-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <Logo variant="light" />
             <p className="mt-6 max-w-md font-display text-3xl leading-[1.05] text-white md:text-4xl">

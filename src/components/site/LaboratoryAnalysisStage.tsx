@@ -95,7 +95,7 @@ export function LaboratoryAnalysisStage() {
   return (
     <section ref={sectionRef} className="relative bg-plasma md:h-[300vh]">
       {!desktopStage ? (
-        <div className="container-editorial py-16 md:hidden">
+        <div className="container-editorial py-12 md:hidden">
           <div className="brand-label text-blue">
             Une interprétation fiable et précise
           </div>
@@ -103,14 +103,15 @@ export function LaboratoryAnalysisStage() {
             Une analyse ne se résume pas à{" "}
             <em className="text-blue">un chiffre.</em>
           </h2>
-          <div className="mt-9 space-y-4">
+          <div className="mt-6 space-y-3">
             {analyses.map((item, index) => {
               const Icon = item.icon;
               return (
                 <motion.article
                   key={item.number}
-                  className="relative min-h-[440px] overflow-hidden rounded-[1.45rem] bg-midnight text-white min-[390px]:min-h-[470px]"
+                  className="relative min-h-[400px] overflow-hidden rounded-[1.45rem] bg-midnight text-white min-[390px]:min-h-[420px]"
                   initial={reduced ? false : { opacity: 0, y: 38 }}
+                  animate={reduced ? { opacity: 1, y: 0 } : undefined}
                   whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={
                     reduced ? undefined : { once: true, margin: "-10%" }
@@ -139,6 +140,7 @@ export function LaboratoryAnalysisStage() {
                       loading="lazy"
                       decoding="async"
                       initial={reduced ? false : { scale: 1.08 }}
+                      animate={reduced ? { scale: 1 } : undefined}
                       whileInView={reduced ? undefined : { scale: 1 }}
                       viewport={reduced ? undefined : { once: true }}
                       transition={

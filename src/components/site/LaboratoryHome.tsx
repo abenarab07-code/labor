@@ -674,13 +674,13 @@ export function LaboratoryHome() {
           <span className="absolute left-1/2 top-0 h-2 w-2 rounded-full bg-coral shadow-[0_0_24px_6px_rgba(239,93,88,0.35)]" />
           <span className="absolute inset-[18%] rounded-full border border-dashed border-white/10" />
         </motion.div>
-        <div className="container-editorial relative grid gap-10 lg:grid-cols-12 lg:items-center">
+        <div className="container-editorial relative grid gap-6 sm:gap-10 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-6">
             <div className="brand-label text-coral">
               Lecture cytologique de précision
             </div>
             <h2 className="mt-4 max-w-[10ch] font-display text-[clamp(2.65rem,12vw,3.5rem)] leading-[0.91] tracking-[-0.04em] text-white md:mt-5 md:text-[clamp(3.1rem,7vw,7rem)] md:leading-[0.89] md:tracking-[-0.045em]">
-              Frottis sanguin et médullogramme.
+              Compléter ce que le bilan sanguin ne révèle pas.
             </h2>
           </Reveal>
           <Reveal className="lg:col-span-5 lg:col-start-8" delay={0.14}>

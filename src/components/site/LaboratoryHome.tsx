@@ -25,6 +25,9 @@ import bloodSmear from "@/assets/brand/blood-smear.webp";
 import bloodSmearAvif from "@/assets/brand/blood-smear.avif";
 import doctorPoster from "@/assets/brand/dr-tarfaya-poster-clean.webp";
 import doctorPosterAvif from "@/assets/brand/dr-tarfaya-poster-clean.avif";
+import laboratorySignature from "@/assets/brand/laboratoire-signature.avif";
+import laboratoryInteriorPoster from "@/assets/brand/laboratoire-interieur-poster.avif";
+import laboratoryAccessPoster from "@/assets/brand/acces-laboratoire-poster.avif";
 
 const specialties = [
   {
@@ -921,6 +924,93 @@ export function LaboratoryHome() {
               </a>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="laboratoire-reel-title"
+        className="overflow-hidden bg-midnight py-12 text-white md:py-28"
+      >
+        <div className="container-editorial">
+          <div className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <Reveal className="lg:col-span-7">
+              <div className="brand-label text-coral">Sur place</div>
+              <h2
+                id="laboratoire-reel-title"
+                className="mt-4 max-w-[10ch] font-display text-[2.65rem] leading-[0.92] tracking-[-0.035em] text-white min-[390px]:text-5xl md:mt-5 md:text-7xl"
+              >
+                Le laboratoire, <em className="text-blue-light">en vrai.</em>
+              </h2>
+            </Reveal>
+            <Reveal className="lg:col-span-4 lg:col-start-9" delay={0.1}>
+              <p className="max-w-lg text-sm leading-6 text-white/65 md:text-base md:leading-7">
+                Découvrez les espaces du laboratoire et le parcours d'accès
+                avant votre venue.
+              </p>
+              <a
+                href={clinic.mapsHref}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-flex items-center gap-3 rounded-md border border-white/20 px-4 py-3 text-sm font-semibold text-white transition-colors hover:border-blue-light hover:text-blue-light"
+              >
+                <MapPin className="h-4 w-4" /> Ouvrir l'itinéraire du
+                laboratoire
+              </a>
+            </Reveal>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-3 md:mt-12 md:gap-5 lg:grid-cols-12">
+            <figure className="col-span-2 flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 lg:col-span-6 lg:h-[34rem]">
+              <img
+                src={laboratorySignature}
+                alt="Logo mural rouge du laboratoire Dr Tarfaya"
+                width={1280}
+                height={720}
+                loading="lazy"
+                decoding="async"
+                className="aspect-video w-full object-cover lg:min-h-0 lg:flex-1 lg:aspect-auto"
+              />
+              <figcaption className="flex items-center justify-between gap-3 border-t border-white/10 px-4 py-3 text-xs text-white/58 sm:px-5 sm:py-4 sm:text-sm">
+                <span>Laboratoire Dr Tarfaya</span>
+                <span className="text-white/38">El Bouni</span>
+              </figcaption>
+            </figure>
+
+            <figure className="flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 lg:col-span-3 lg:h-[34rem]">
+              <video
+                controls
+                playsInline
+                preload="none"
+                poster={laboratoryInteriorPoster}
+                className="aspect-[3/4] w-full bg-black object-cover lg:min-h-0 lg:flex-1 lg:aspect-auto"
+                aria-label="Visite vidéo de la salle de prélèvement"
+              >
+                <source
+                  src="/media/laboratoire-interieur.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <figcaption className="border-t border-white/10 px-3 py-3 text-xs text-white/65 sm:px-4 sm:text-sm">
+                Salle de prélèvement
+              </figcaption>
+            </figure>
+
+            <figure className="flex flex-col overflow-hidden rounded-xl border border-white/10 bg-white/5 lg:col-span-3 lg:h-[34rem]">
+              <video
+                controls
+                playsInline
+                preload="none"
+                poster={laboratoryAccessPoster}
+                className="aspect-[3/4] w-full bg-black object-cover lg:min-h-0 lg:flex-1 lg:aspect-auto"
+                aria-label="Vidéo d'accès au laboratoire Dr Tarfaya"
+              >
+                <source src="/media/acces-laboratoire.mp4" type="video/mp4" />
+              </video>
+              <figcaption className="border-t border-white/10 px-3 py-3 text-xs text-white/65 sm:px-4 sm:text-sm">
+                Accès au laboratoire
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 

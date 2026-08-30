@@ -13,13 +13,13 @@ export const clinic = {
   instagramHandle: "",
   instagramHref: "",
   address: {
-    line1: "Promotion Les Bons Enfants, bloc D, 1er étage",
+    line1: "Promotion Hami, bloc D, 1er étage",
     city: "El Bouni",
     region: "Annaba",
     country: "Algérie",
   },
   mapsHref:
-    "https://www.google.com/maps/search/?api=1&query=Promotion+Les+Bons+Enfants+bloc+D+El+Bouni+Annaba",
+    "https://www.google.com/maps/dir/?api=1&destination=Laboratoire+d%27analyses+m%C3%A9dicales+et+cabinet+d%27h%C3%A9matologie+Dr+Tarfaya%2C+Promotion+Hami+Bloc+D%2C+El+Bouni%2C+Annaba",
   hours: [
     { label: "Samedi - Jeudi", value: "Horaires à confirmer", closed: false },
     { label: "Vendredi", value: "Fermé", closed: true },

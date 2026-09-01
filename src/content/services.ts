@@ -53,12 +53,12 @@ export const serviceGroups: ServiceGroup[] = [
   {
     id: "hematologie",
     title: "Hématologie spécialisée",
-    intro: "Quand le résultat demande une lecture plus profonde.",
+    intro: "Une expertise médicale centrée sur les maladies du sang.",
     services: [
       {
         slug: "frottis-sanguin",
         name: "Frottis sanguin",
-        short: "Observation spécialisée des cellules du sang.",
+        short: "Étude morphologique des cellules du sang.",
         body: "L'étude morphologique du sang complète certains bilans et aide le médecin à orienter l'interprétation clinique.",
       },
       {

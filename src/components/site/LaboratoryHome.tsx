@@ -46,14 +46,10 @@ const specialties = [
     id: "hematologie",
     number: "02",
     kicker: "L'expertise qui va plus loin",
-    title: "Cytologie spécialisée",
+    title: "Hématologie spécialisée",
     description:
-      "Une lecture médicale spécialisée lorsque les cellules du sang, la moelle ou un résultat nécessitent une exploration ciblée.",
-    points: [
-      "Frottis sanguin",
-      "Cytologie médullaire",
-      "Cytologie ganglionnaire",
-    ],
+      "Une expertise médicale consacrée aux maladies du sang et aux explorations indiquées pour chaque patient.",
+    points: ["NFS", "Frottis sanguin", "Médullogramme"],
     icon: Microscope,
     image: bloodSmear,
     avif: bloodSmearAvif,
@@ -109,8 +105,8 @@ const frequentlyAsked = [
     a: "Oui, selon disponibilité. Indiquez brièvement votre demande et les examens déjà réalisés afin que l'équipe puisse vous orienter vers le bon rendez-vous.",
   },
   {
-    q: "Proposez-vous le frottis sanguin et la cytologie médullaire ?",
-    a: "Ces examens font partie des expertises mises en avant par le laboratoire. Leur indication et leur organisation sont confirmées au cas par cas par l'équipe médicale.",
+    q: "Comment les résultats sont-ils contrôlés ?",
+    a: "Les analyses suivent les étapes techniques et les contrôles prévus au laboratoire. Les résultats sont ensuite revus et validés médicalement avant leur communication.",
   },
   {
     q: "Le formulaire du site convient-il à une urgence ?",
@@ -680,27 +676,26 @@ export function LaboratoryHome() {
         <div className="container-editorial relative grid gap-6 sm:gap-10 lg:grid-cols-12 lg:items-center">
           <Reveal className="lg:col-span-6">
             <div className="brand-label text-coral">
-              Lecture cytologique de précision
+              Expertise médicale en hématologie
             </div>
             <h2 className="mt-4 max-w-[10ch] font-display text-[clamp(2.65rem,12vw,3.5rem)] leading-[0.91] tracking-[-0.04em] text-white md:mt-5 md:text-[clamp(3.1rem,7vw,7rem)] md:leading-[0.89] md:tracking-[-0.045em]">
-              Compléter ce que le bilan sanguin ne révèle pas.
+              Une spécialiste des maladies du sang.
             </h2>
           </Reveal>
           <Reveal className="lg:col-span-5 lg:col-start-8" delay={0.14}>
             <p className="text-lg leading-8 text-plasma/74">
-              Le frottis sanguin et le médullogramme sont deux examens de très
-              grande valeur diagnostique. L'étude cytologique précise des
-              éléments figurés du sang et de la moelle osseuse permet de
-              détecter d'éventuelles anomalies, de poser ou d'écarter le
-              diagnostic d'hémopathies malignes et d'autres pathologies bénignes
-              du sang.
+              Dr Tarfaya, médecin spécialiste en hématologie, met en relation
+              l'examen du sang, les résultats disponibles et le contexte
+              clinique. Selon l'indication, le frottis sanguin ou le
+              médullogramme complètent le bilan pour orienter le diagnostic et
+              la prise en charge.
             </p>
             <div className="mt-6 grid gap-px overflow-hidden rounded-xl bg-white/10 sm:mt-9 sm:grid-cols-2">
               {[
-                "Frottis sanguin",
-                "Ponction de moelle osseuse sous sédation",
-                "Cytologie ganglionnaire",
-                "Biopsie ostéomédullaire sous anesthésie",
+                "NFS et frottis sanguin",
+                "Médullogramme",
+                "Ponction ou biopsie ostéomédullaire",
+                "Consultation en hématologie",
               ].map((label, index) => (
                 <div
                   key={label}
@@ -885,28 +880,26 @@ export function LaboratoryHome() {
           <Reveal className="lg:col-span-6 lg:col-start-7" delay={0.1}>
             <div className="brand-label text-blue">Dr Tarfaya Radya</div>
             <h2 className="mt-4 font-display text-[clamp(2.65rem,12vw,3.5rem)] leading-[0.91] tracking-[-0.04em] text-midnight md:mt-5 md:text-[clamp(3.2rem,6.5vw,6.6rem)] md:leading-[0.89] md:tracking-[-0.045em]">
-              Le laboratoire observe.{" "}
-              <em className="text-blue">Le médecin relie.</em>
+              Le laboratoire analyse.{" "}
+              <em className="text-blue">
+                La spécialiste valide et interprète.
+              </em>
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-8 text-slate sm:mt-7">
-              Médecin spécialiste en biochimie, Dr Tarfaya relie la mesure
-              biologique au contexte médical. Son approche associe rigueur
-              analytique, explication claire et orientation adaptée à chaque
-              dossier.
+              Médecin spécialiste en hématologie, Dr Tarfaya interprète les
+              résultats dans leur contexte clinique et oriente, lorsque cela est
+              nécessaire, les explorations complémentaires.
             </p>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate sm:mt-5">
-              Notre laboratoire d'analyses médicales est en plein développement.
-              Notre vocation est de répondre aux besoins de nos patients et de
-              leurs médecins traitants grâce à des examens validés par notre
-              médecin spécialiste.
+              Au laboratoire, les prélèvements sont traités sur un plateau
+              technique adapté. Les résultats sont contrôlés puis validés
+              médicalement avant leur communication.
             </p>
             <div className="mt-6 border-l-2 border-coral pl-5 sm:mt-9 sm:pl-6">
-              <span className="brand-label text-coral">
-                Le principe de la marque
-              </span>
+              <span className="brand-label text-coral">Notre engagement</span>
               <p className="mt-2 font-display text-3xl leading-tight text-midnight">
-                Le patient ne reste pas seul face à un résultat qu'il ne
-                comprend pas.
+                Des résultats contrôlés, expliqués et utiles à la décision
+                médicale.
               </p>
             </div>
             <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">

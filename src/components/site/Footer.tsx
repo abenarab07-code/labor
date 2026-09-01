@@ -11,9 +11,9 @@ export function Footer() {
           <div className="lg:col-span-5">
             <Logo variant="light" />
             <p className="mt-6 max-w-md font-display text-3xl leading-[1.05] text-white md:text-4xl">
-              Comprendre le sang.
+              Analyser avec rigueur.
               <br />
-              <em className="text-blue">Éclairer le diagnostic.</em>
+              <em className="text-blue">Valider avec expertise.</em>
             </p>
           </div>
 

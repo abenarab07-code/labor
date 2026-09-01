@@ -124,14 +124,15 @@ export function LaboratoryHero() {
           </h1>
 
           <p className="mt-5 max-w-xl text-[0.94rem] leading-6 text-slate sm:mt-7 sm:text-base sm:leading-7 md:text-lg">
-            Analyses médicales, biochimie, hématologie, hormonologie et
-            immunologie, avec cytologie médullaire et ganglionnaire.
+            Laboratoire équipé pour la biochimie, l'hématologie, l'hormonologie
+            et l'immunologie. Chaque résultat suit un processus de contrôle et
+            de validation médicale.
             <span
               dir="rtl"
               className="mt-2 block text-sm font-medium leading-6 text-midnight/80 sm:mt-3 sm:text-base"
             >
-              تحاليل طبية، كيمياء حيوية، أمراض الدم، الهرمونات والمناعة، مع علم
-              الخلايا النخاعية والعقدية
+              مخبر تحاليل طبية مجهز للكيمياء الحيوية وأمراض الدم والهرمونات
+              والمناعة، مع مراقبة النتائج والمصادقة الطبية عليها
             </span>
           </p>
 
@@ -154,9 +155,9 @@ export function LaboratoryHero() {
 
           <div className="mt-6 grid max-w-xl grid-cols-3 border-y border-midnight/10 sm:mt-10">
             {[
-              [FlaskConical, "Analyses"],
-              [Microscope, "Biochimie"],
-              [Stethoscope, "Hématologie"],
+              [FlaskConical, "Prélèvement"],
+              [Microscope, "Analyse"],
+              [Stethoscope, "Validation médicale"],
             ].map(([Icon, label], index) => {
               const IconComponent = Icon as typeof FlaskConical;
               return (
@@ -213,7 +214,7 @@ export function LaboratoryHero() {
                   />
                   <img
                     src={heroDiagnostic}
-                    alt="Cellule sanguine observée dans un champ diagnostique"
+                    alt="Plateau technique du laboratoire Dr Tarfaya"
                     className="h-full w-full object-cover object-[58%_50%] sm:object-center"
                     width={1672}
                     height={941}
@@ -245,15 +246,15 @@ export function LaboratoryHero() {
                   ) : (
                     <span className="h-1.5 w-1.5 rounded-full bg-coral" />
                   )}
-                  OBSERVATION MICROSCOPIQUE
+                  PLATEAU TECHNIQUE
                 </div>
                 <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-white sm:bottom-6 sm:left-6 sm:right-6">
                   <div>
                     <div className="brand-label text-blue">
-                      Lecture cytologique de précision
+                      Analyse biologique
                     </div>
                     <div className="mt-1.5 font-display text-2xl sm:mt-2 sm:text-3xl">
-                      Observer. Interpréter. Poser le diagnostic.
+                      Mesurer. Contrôler. Valider.
                     </div>
                   </div>
                   <span className="hidden font-mono text-[0.55rem] tracking-[0.14em] text-white/40 sm:block">

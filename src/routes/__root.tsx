@@ -78,11 +78,11 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Laboratoire Dr Tarfaya | Analyses, Biochimie & Hématologie" },
+      { title: "Laboratoire Dr Tarfaya | Analyses & Hématologie" },
       {
         name: "description",
         content:
-          "Analyses médicales, biochimie, hématologie, hormonologie, immunologie et cytologie à Annaba, El Bouni.",
+          "Laboratoire d'analyses médicales à El Bouni, Annaba : biochimie, hématologie, hormonologie et immunologie, avec validation médicale et consultation spécialisée en hématologie.",
       },
       { name: "author", content: "Laboratoire Dr Tarfaya" },
       { name: "theme-color", content: "#071A2B" },
@@ -95,17 +95,17 @@ export const Route = createRootRoute({
       },
       {
         name: "twitter:title",
-        content: "Dr Tarfaya — Analyses, Biochimie & Hématologie",
+        content: "Dr Tarfaya — Analyses médicales & expertise en hématologie",
       },
       {
         property: "og:description",
         content:
-          "Laboratoire d'analyses médicales, biochimie, hématologie et cytologie à Annaba, El Bouni.",
+          "Analyses médicales avec validation médicale et consultation spécialisée en hématologie à Annaba, El Bouni.",
       },
       {
         name: "twitter:description",
         content:
-          "Laboratoire d'analyses médicales, biochimie, hématologie et cytologie à Annaba, El Bouni.",
+          "Analyses médicales avec validation médicale et consultation spécialisée en hématologie à Annaba, El Bouni.",
       },
     ],
     links: [

@@ -38,7 +38,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Laboratoire d'analyses médicales, biochimie, hématologie, hormonologie, immunologie et cytologie à Annaba, El Bouni. Contact WhatsApp et rendez-vous.",
+          "Laboratoire d'analyses médicales à El Bouni, Annaba : biochimie, hématologie, hormonologie et immunologie, avec validation médicale et consultation spécialisée en hématologie.",
       },
       {
         property: "og:title",
@@ -47,7 +47,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Analyses médicales, biochimie, hématologie et cytologie à Annaba, El Bouni.",
+          "Analyses médicales avec validation médicale et consultation spécialisée en hématologie à Annaba, El Bouni.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

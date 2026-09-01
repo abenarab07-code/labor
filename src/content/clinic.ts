@@ -1,9 +1,9 @@
 export const clinic = {
   brand: "Dr Tarfaya",
   fullName: "Laboratoire Dr Tarfaya",
-  tagline: "Laboratoire d'analyses médicales & Biochimie",
+  tagline: "Laboratoire d'analyses médicales & consultation en hématologie",
   positioning:
-    "Analyses médicales, biochimie, hématologie, hormonologie, immunologie et cytologie à Annaba, El Bouni.",
+    "Analyses médicales avec validation médicale et consultation spécialisée en hématologie à Annaba, El Bouni.",
   phone: "0792 57 05 57",
   phoneHref: "tel:+213792570557",
   whatsapp: "0792 57 05 57",
@@ -24,7 +24,7 @@ export const clinic = {
     { label: "Samedi - Jeudi", value: "Horaires à confirmer", closed: false },
     { label: "Vendredi", value: "Fermé", closed: true },
   ],
-  speciality: "Médecin spécialiste en biochimie",
+  speciality: "Médecin spécialiste en hématologie",
   socialProof: {
     googleRating: "-",
     googleReviews: 0,

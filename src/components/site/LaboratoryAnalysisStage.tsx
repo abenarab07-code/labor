@@ -33,10 +33,10 @@ import doctorPosterMobileAvif from "@/assets/brand/dr-tarfaya-poster-clean-768.a
 const analyses = [
   {
     number: "01",
-    label: "Analyses médicales de précision",
-    title: "Analyses médicales",
-    text: "Le prélèvement, l'examen et les consignes s'organisent avec clarté — avant même votre arrivée.",
-    points: ["Biochimie", "Hématologie", "Hormonologie", "Immunologie"],
+    label: "Paramètres biologiques",
+    title: "Biochimie & analyses médicales",
+    text: "Les prélèvements sont analysés sur un plateau technique adapté. Les résultats sont contrôlés puis validés médicalement avant leur communication.",
+    points: ["Glycémie", "Bilan rénal", "Bilan hépatique", "Bilan lipidique"],
     image: labAnalysis,
     avif: labAnalysisAvif,
     mobileAvif: labAnalysisMobileAvif,
@@ -45,14 +45,10 @@ const analyses = [
   },
   {
     number: "02",
-    label: "Lecture cytologique de précision",
-    title: "Cytologie spécialisée",
-    text: "Observer les cellules du sang, de la moelle osseuse et des ganglions pour interpréter les anomalies et poser le diagnostic.",
-    points: [
-      "Frottis sanguin",
-      "Cytologie médullaire",
-      "Cytologie ganglionnaire",
-    ],
+    label: "Expertise des maladies du sang",
+    title: "Hématologie spécialisée",
+    text: "La NFS, le frottis sanguin et, selon l'indication, le médullogramme apportent des données utiles à l'interprétation médicale.",
+    points: ["NFS", "Frottis sanguin", "Médullogramme"],
     image: bloodSmear,
     avif: bloodSmearAvif,
     mobileAvif: bloodSmearMobileAvif,
@@ -97,11 +93,11 @@ export function LaboratoryAnalysisStage() {
       {!desktopStage ? (
         <div className="container-editorial py-12 md:hidden">
           <div className="brand-label text-blue">
-            Une interprétation fiable et précise
+            Du prélèvement à la validation
           </div>
           <h2 className="mt-4 max-w-[12ch] font-display text-[2.65rem] leading-[0.92] tracking-[-0.04em] text-midnight min-[390px]:text-5xl">
-            Une analyse ne se résume pas à{" "}
-            <em className="text-blue">un chiffre.</em>
+            Chaque résultat suit un{" "}
+            <em className="text-blue">processus rigoureux.</em>
           </h2>
           <div className="mt-6 space-y-3">
             {analyses.map((item, index) => {
@@ -294,7 +290,9 @@ function DesktopAnalysisStage({
 
       <div className="container-editorial relative grid h-full grid-cols-12 items-center">
         <div className="col-span-6 max-w-[620px] pr-10">
-          <div className="brand-label text-blue">Explorez le diagnostic</div>
+          <div className="brand-label text-blue">
+            Analyses & expertise médicale
+          </div>
           <AnimatePresence mode="sync">
             <motion.div
               key={current.number}

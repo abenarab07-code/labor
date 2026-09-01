@@ -33,10 +33,16 @@ import doctorPosterMobileAvif from "@/assets/brand/dr-tarfaya-poster-clean-768.a
 const analyses = [
   {
     number: "01",
-    label: "Biochimie — paramètres biologiques",
+    label: "Tous les paramètres biologiques disponibles",
     title: "Analyses médicales",
-    text: "Les prélèvements sont analysés sur un plateau technique adapté. Les résultats sont contrôlés puis validés médicalement avant leur communication.",
-    points: ["Glycémie", "Bilan rénal", "Bilan hépatique", "Bilan lipidique"],
+    text: "Les prélèvements sont analysés sur un plateau technique fiable, au moyen de plusieurs équipements de haute technologie. Les résultats sont contrôlés et validés par le médecin-chef du laboratoire. Pour les examens de biologie moléculaire, notre laboratoire est conventionné avec des laboratoires étrangers.",
+    points: [
+      "Hématologie",
+      "Biochimie",
+      "Hormonologie",
+      "Immunologie clinique",
+      "Cytologie",
+    ],
     image: labAnalysis,
     avif: labAnalysisAvif,
     mobileAvif: labAnalysisMobileAvif,
